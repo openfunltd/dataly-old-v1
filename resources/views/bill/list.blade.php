@@ -1,6 +1,71 @@
 @extends('layouts.sbAdmin2')
 @section('content')
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">@lang('提案')</h1>
+<h1 class="h3 mb-0 text-gray-800">@lang('提案')</h1>
+</div>
+<!-- DataTales -->
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">@lang('提案列表')</h6>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive" style="overflow-x: auto;">
+      <table class="table table-bordered table-hover table-sm nowrap" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th >@lang('快速連結')</th>
+            <th>@lang('對照表')</th>
+            <th>@lang('排入院會日期')</th>
+            <th>@lang('提案編號')</th>
+            <th>@lang('提案第一人/提案單位')</th>
+            <th>@lang('議案名稱')</th>
+            <th>@lang('對應法律')</th>
+          </tr>
+        </thead>
+        <tbody>
+        @foreach ($rows as $row)
+        <tr>
+          <td>
+            @foreach ($row['links'] as $idx => $link)
+              @if ($link[1] === '')
+                {{ $link[0] }}
+              @else
+                <a href="{{ $link[1] }}" target="_blank">{{ $link[0] }}</a>
+              @endif
+              @if ($idx < count($row['links']) - 1)
+              |
+              @endif
+            @endforeach
+          </td>
+          <td>{{ ($row['law_diff']) ? '✅' : '❌'}}</td>
+          <td>{{ $row['initial_date'] }}</td>
+          <td>{{ $row['bill_id'] }}</td>
+          <td>{{ $row['proposer'] }}</td>
+          <td>{{ $row['bill_name'] }}</td>
+          <td>
+            @foreach ($row['law_names'] as $idx => $law_name)
+              {{ $law_name }}
+              @if ($idx < count($row['links']) - 1)
+                <br>
+              @endif
+            @endforeach
+          </td>
+        </tr>
+        @endforeach
+        </tbody>
+        <tfoot>
+          <tr>
+            <th></th>
+            <th>對照表</th>
+            <th>排入院會日期</th>
+            <th>提案編號</th>
+            <th>提案第一人/提案單位</th>
+            <th>議案名稱</th>
+            <th>對應法律</th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
 </div>
 @endsection

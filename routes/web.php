@@ -1,9 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
-Route::get('/', function () {
-    return view('welcome');
-});
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MeetController;
 Route::get('/', [DashboardController::class, 'dashboard']);
+Route::get('/meets', [MeetController::class, 'meets'])->name('meets');

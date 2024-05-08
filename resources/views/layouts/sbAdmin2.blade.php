@@ -46,12 +46,12 @@
                 Data
             </div>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('meets')}}">
+                <a class="nav-link" href="{{ route('meets') }}">
                     <i class="fas fa-fw fa-table"></i>
                     <span>@lang('會議 /meets')</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="{{ route('bills') }}">
                     <i class="fas fa-fw fa-table"></i>
                     <span>提案 /bills</span></a>
             </li>
@@ -89,7 +89,7 @@
                     <form
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                            <input type="text" class="form-control bg-light border-0 small" placeholder="// Search function WIP"
                                 aria-label="Search" aria-describedby="basic-addon2">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="button">
@@ -114,7 +114,7 @@
                                 <form class="form-inline mr-auto w-100 navbar-search">
                                     <div class="input-group">
                                         <input type="text" class="form-control bg-light border-0 small"
-                                            placeholder="Search for..." aria-label="Search"
+                                            placeholder="// Search function WIP" aria-label="Search"
                                             aria-describedby="basic-addon2">
                                         <div class="input-group-append">
                                             <button class="btn btn-primary" type="button">

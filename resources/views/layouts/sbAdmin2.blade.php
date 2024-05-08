@@ -46,18 +46,18 @@
                 Data
             </div>
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>會議 /meets</span></a>
+                <a class="nav-link" href="{{ route('meets')}}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>@lang('會議 /meets')</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="tables.html">
-                    <i class="fas fa-fw fa-chart-area"></i>
+                    <i class="fas fa-fw fa-table"></i>
                     <span>提案 /bills</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="tables.html">
-                    <i class="fas fa-fw fa-chart-area"></i>
+                    <i class="fas fa-fw fa-table"></i>
                     <span>立委 /legislators</span></a>
             </li>
 

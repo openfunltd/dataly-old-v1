@@ -23,6 +23,7 @@ class BillController extends Controller
                 $row['law_diff'] = array_key_exists('對照表', $bill);
                 $row['initial_date'] = self::getInitialDate($bill);
                 $row['bill_id'] = $bill['提案編號'] ?? 'No Data';
+                $row['sessionPeriod'] = $bill['會期'] ?? '- No Data';
                 $row['proposer'] = self::getProposer($bill);
                 $row['bill_name'] = self::parseBillName($bill);
                 $row['law_names'] = self::getLawNames($bill, $law_name_map);

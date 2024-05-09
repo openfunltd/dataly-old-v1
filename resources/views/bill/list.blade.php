@@ -23,6 +23,7 @@
             <th class="dt-head-center">@lang('對照表')</th>
             <th class="dt-head-center">@lang('排入院會日期')</th>
             <th class="dt-head-center">@lang('提案編號')</th>
+            <th class="dt-head-center">@lang('會期')</th>
             <th class="dt-head-center">@lang('提案第一人/提案單位')</th>
             <th class="dt-head-center">@lang('議案名稱')</th>
             <th class="dt-head-center">@lang('對應法律')</th>
@@ -46,6 +47,7 @@
           <td>{{ ($row['law_diff']) ? '✅' : '❌'}}</td>
           <td>{{ $row['initial_date'] }}</td>
           <td>{{ $row['bill_id'] }}</td>
+          <td>{{ $row['sessionPeriod'] }}</td>
           <td>{{ $row['proposer'] }}</td>
           <td>{{ $row['bill_name'] }}</td>
           <td>

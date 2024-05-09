@@ -23,7 +23,7 @@ $(document).ready(function() {
     keys: true,
     columnDefs: [
         { orderable: false, targets: 'nosort' },
-        { className: 'dt-body-center', targets: [1, 2, 3, 4]},
+        { className: 'dt-body-center', targets: [1, 2, 3, 4, 5]},
     ],
     order: [2, 'desc'],
   });

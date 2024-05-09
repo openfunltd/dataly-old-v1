@@ -6,20 +6,26 @@
 <!-- DataTales -->
 <div class="card shadow mb-4">
   <div class="card-header py-3">
-    <h6 class="m-0 font-weight-bold text-primary">@lang('提案列表')</h6>
+    @foreach ($terms as $term)
+    <a href="{{ route('bills', ['term' => $term])}}"
+      class="btn {{ ($term == $parameters['term']) ? 'btn-danger' : 'btn-info'}} btn-sm"
+    >
+      <span class="text">{{ __('第 :term 屆', ['term' => $term])}}</span>
+    </a>
+    @endforeach
   </div>
   <div class="card-body">
     <div class="table-responsive" style="overflow-x: auto;">
       <table class="table table-bordered table-hover table-sm nowrap" id="dataTable" width="100%" cellspacing="0">
         <thead>
           <tr>
-            <th >@lang('快速連結')</th>
-            <th>@lang('對照表')</th>
-            <th>@lang('排入院會日期')</th>
-            <th>@lang('提案編號')</th>
-            <th>@lang('提案第一人/提案單位')</th>
-            <th>@lang('議案名稱')</th>
-            <th>@lang('對應法律')</th>
+            <th class="dt-head-center">@lang('快速連結')</th>
+            <th class="dt-head-center">@lang('對照表')</th>
+            <th class="dt-head-center">@lang('排入院會日期')</th>
+            <th class="dt-head-center">@lang('提案編號')</th>
+            <th class="dt-head-center">@lang('提案第一人/提案單位')</th>
+            <th class="dt-head-center">@lang('議案名稱')</th>
+            <th class="dt-head-center">@lang('對應法律')</th>
           </tr>
         </thead>
         <tbody>

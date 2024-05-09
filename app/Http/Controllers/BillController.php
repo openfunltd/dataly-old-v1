@@ -9,34 +9,75 @@ class BillController extends Controller
 {
     public function bills() 
     {
-        $bills = self::requestBills(11, 1);
-        $law_name_map = self::requestLawNameMap($bills);
+        $termStat = self::requestTermStat();
+        $terms = self::getTermOptions($termStat);
+        $term = (request()->query('term')) ?? $terms[0];
+        $sessionPeriods = self::getSessionPeriods($termStat, $term);
         $rows = [];
-        foreach ($bills as $bill) {
-            $row = [];
-            $row['links'] = self::buildLinks($bill);
-            $row['law_diff'] = array_key_exists('對照表', $bill);
-            $row['initial_date'] = self::getInitialDate($bill);
-            $row['bill_id'] = $bill['提案編號'] ?? 'No Data';
-            $row['proposer'] = self::getProposer($bill);
-            $row['bill_name'] = self::parseBillName($bill);
-            $row['law_names'] = self::getLawNames($bill, $law_name_map);
-            $rows[] = $row;
+        foreach ($sessionPeriods as $sessionPeriod) {
+            $bills = self::requestBills($term, $sessionPeriod);
+            $law_name_map = self::requestLawNameMap($bills);
+            foreach ($bills as $bill) {
+                $row = [];
+                $row['links'] = self::buildLinks($bill);
+                $row['law_diff'] = array_key_exists('對照表', $bill);
+                $row['initial_date'] = self::getInitialDate($bill);
+                $row['bill_id'] = $bill['提案編號'] ?? 'No Data';
+                $row['proposer'] = self::getProposer($bill);
+                $row['bill_name'] = self::parseBillName($bill);
+                $row['law_names'] = self::getLawNames($bill, $law_name_map);
+                $rows[] = $row;
+            }
         }
         return view('bill.list', [
+            'terms' => $terms,
             'rows' => $rows,
+            'parameters' => [
+                'term' => $term,
+            ],
         ]);
+    }
+
+    private function requestTermStat()
+    {
+        $url = 'https://ly.govapi.tw/stat';
+        $res = Http::get($url);
+        $termStat = [];
+        if ($res->successful()) {
+            $termStat = $res->json()['bill']['terms'];
+        }
+        return $termStat;
+    }
+
+    private function getTermOptions($termStat)
+    {
+        $terms = array_map(function($termData) {
+            return $termData['term'];
+        }, $termStat);
+        return $terms;
+    }
+
+    private function getSessionPeriods($termStat, $term)
+    {
+        $termData = array_filter($termStat, function($termData) use ($term) {
+            return $termData['term'] == $term;
+        });
+        $termData = reset($termData);
+        $sessionPeriods =  array_map(function($sessionPeriodData) {
+            return $sessionPeriodData['sessionPeriod'];
+        },$termData['sessionPeriod_count']);
+        return $sessionPeriods;
     }
 
     private function requestBills($term, $session_period) 
     {
         $bills = [];
-        $bills_url = self::buildBillsUrl(11, 1, '委員提案');
+        $bills_url = self::buildBillsUrl($term, $session_period, '委員提案');
         $res = Http::get($bills_url);
         if ($res->successful()) {
             $bills = $res->json()['bills'];
         }
-        $bills_url = self::buildBillsUrl(11, 1, '政府提案');
+        $bills_url = self::buildBillsUrl($term, $session_period, '政府提案');
         $res = Http::get($bills_url);
         if ($res->successful()) {
             $bills = array_merge($bills, $res->json()['bills']);
@@ -69,7 +110,7 @@ class BillController extends Controller
         $law_ids_chunk = [];
         $chunk_size = 200;
         for ($i = 0; $i < count($law_ids); $i += $chunk_size) {
-            $law_ids_chunk[] = array_slice($law_ids, $i, $i + $chunk_size);
+            $law_ids_chunk[] = array_slice($law_ids, $i, $chunk_size);
         }
         $laws = [];
         foreach ($law_ids_chunk as $chunk_ids) {
@@ -110,7 +151,7 @@ class BillController extends Controller
 
     private function getInitialDate($bill)
     {
-        $initialDate = substr($bill['mtime'], 0, 10) . '*';
+        $initialDate = '- No Data';
         if (is_null($bill['議案流程']) || count($bill['議案流程']) === 0) {
             return $initialDate;
         }

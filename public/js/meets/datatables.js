@@ -6,7 +6,7 @@ $(document).ready(function() {
         .columns()
         .every(function () {
           let column = this;
-          if (! [0, 1, 2].includes(this.index()) || this.footer() === null || column.footer() === null) {
+          if (! [0, 1, 2, 3].includes(this.index()) || this.footer() === null || column.footer() === null) {
             return;
           }
           let title = this.footer().textContent;

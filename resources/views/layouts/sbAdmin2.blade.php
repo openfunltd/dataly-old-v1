@@ -7,13 +7,12 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Dataly</title>
-    <link href="{{ asset('css/fontawesome-free.all.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/vendor/fontawesome.all.css') }}" rel="stylesheet">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
-    <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/custom/datatables.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/vendor/sb-admin-2.min.css') }}" rel="stylesheet">
+    @yield('head-load')
 </head>
 <body id="page-top">
 
@@ -182,16 +181,11 @@
         </div>
     </div>
 
-    <script src="{{ asset('js/jquery.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.easing.min.js') }}"></script>
-    <script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
+    <script src="{{ asset('js/vendor/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/vendor/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('js/vendor/jquery.easing.min.js') }}"></script>
+    <script src="{{ asset('js/vendor/sb-admin-2.min.js') }}"></script>
+    @yield('body-load')
 
-    <!-- Page level plugins -->
-    <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('js/dataTables.bootstrap4.min.js') }}"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="{{ asset('js/custom/datatables.js') }}"></script>
 </body>
 </html>

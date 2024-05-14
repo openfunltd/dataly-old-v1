@@ -34,7 +34,7 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
+            <li class="nav-item {{ ($nav == 'dashboard') ? 'active' : '' }}">
                 <a class="nav-link" href="/">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
@@ -46,17 +46,17 @@
             <div class="sidebar-heading">
                 Data
             </div>
-            <li class="nav-item">
+            <li class="nav-item {{ ($nav == 'meets') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('meets') }}">
                     <i class="fas fa-fw fa-table"></i>
                     <span>@lang('會議 /meets')</span></a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item {{ ($nav == 'bills') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('bills') }}">
                     <i class="fas fa-fw fa-table"></i>
                     <span>提案 /bills</span></a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item {{ ($nav == 'legislators') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('legislators') }}">
                     <i class="fas fa-fw fa-table"></i>
                     <span>立委 /legislators</span></a>

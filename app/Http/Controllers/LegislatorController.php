@@ -30,6 +30,7 @@ class LegislatorController extends Controller
 
         array_unshift($sessionPeriods, 'all');
         return view('legislator.list', [
+            'nav' => 'legislators',
             'terms' => $terms,
             'sessionPeriods' => $sessionPeriods,
             'legislators' => $legislators,

@@ -31,6 +31,7 @@ class BillController extends Controller
             }
         }
         return view('bill.list', [
+            'nav' => 'bills',
             'terms' => $terms,
             'rows' => $rows,
             'parameters' => [

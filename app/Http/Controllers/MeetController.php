@@ -67,6 +67,7 @@ class MeetController extends Controller
         }
         array_unshift($sessionPeriods, 'all');
         return view('meet.list', [
+            'nav' => 'meets',
             'terms' => $terms,
             'sessionPeriods' => $sessionPeriods,
             'rows' => $rows,

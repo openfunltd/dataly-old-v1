@@ -44,6 +44,7 @@
               <tr>
                   <th class="dt-head-center">@lang('姓名')</th>
                   <th class="dt-head-center">@lang('政黨')</th>
+                  <th class="dt-head-center">@lang('所屬黨團')</th>
                   <th class="dt-head-center">@lang('所屬委員會')</th>
                   <th class="dt-head-center">@lang('選區')</th>
               </tr>
@@ -55,6 +56,8 @@
                         <td>{{ $legislator['name'] }}</td>
                         {{-- 政黨 --}}
                         <td>{{ $legislator['party'] }}</td>
+                        {{-- 所屬黨團 --}}
+                        <td>{{ $legislator['partyGroup'] }}</td>
                         {{-- 所屬委員會 --}}
                         <td>
                             <?php $keys = array_keys($legislator['committee']); ?>
@@ -78,6 +81,7 @@
               <tr>
                   <th>姓名</th>
                   <th>政黨</th>
+                  <th>所屬黨團</th>
                   <th>所屬委員會</th>
                   <th>選區</th>
               </tr>
@@ -90,5 +94,5 @@
 @section('body-load')
     <script src="{{ asset('js/vendor/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('js/vendor/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('js/meets/datatables.js') }}"></script>
+    <script src="{{ asset('js/legislators/datatables.js') }}"></script>
 @endsection

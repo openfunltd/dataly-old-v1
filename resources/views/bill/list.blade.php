@@ -10,6 +10,7 @@
     <!-- DataTales -->
     <div class="card shadow mb-4">
       <div class="card-header py-3">
+        <span>屆期：</span>
         @foreach ($terms as $term)
         <a href="{{ route('bills', ['term' => $term])}}"
           class="btn {{ ($term == $parameters['term']) ? 'btn-danger' : 'btn-info'}} btn-sm"

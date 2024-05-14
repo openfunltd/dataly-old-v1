@@ -92,9 +92,9 @@
                     {{-- Open Data 發言紀錄 --}}
                     <td>
                         <?php $keys = array_keys($row['speeches']); ?>
-                        @foreach ($row['speeches'] as $date => $cnt)
-                            {{ $date }}：{{ $cnt }}人
-                            @if ($date != end($keys))
+                        @foreach ($row['speeches'] as $key => $item)
+                            {{ $item['date'] }}：{{ $item['legislator_cnt'] }}人
+                            @if ($key != end($keys))
                                 <br>
                             @endif
                         @endforeach

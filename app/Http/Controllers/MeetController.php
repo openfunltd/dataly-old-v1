@@ -164,8 +164,11 @@ class MeetController extends Controller
         $speeches = [];
         foreach ($meet['發言紀錄'] as $speech) {
             $smeetingDate = $speech['smeetingDate'];
-            $legislator_count = count($speech['legislatorNameList']);
-            $speeches[$smeetingDate] = $legislator_count;
+            $legislator_cnt = count($speech['legislatorNameList']);
+            $speeches[] = [
+                'date' => $smeetingDate,
+                'legislator_cnt' => $legislator_cnt,
+            ];
         }
         return $speeches;
     }

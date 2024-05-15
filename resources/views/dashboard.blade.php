@@ -133,7 +133,7 @@
             <!-- Card Header - Dropdown -->
             <div
                 class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
+                <h6 class="m-0 font-weight-bold text-primary">第 11 屆立法委員政黨比例</h6>
                 <div class="dropdown no-arrow">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -152,17 +152,20 @@
             <!-- Card Body -->
             <div class="card-body">
                 <div class="chart-pie pt-4 pb-2">
-                    <canvas id="myPieChart"></canvas>
+                    <canvas id="party-pie-chart"></canvas>
                 </div>
                 <div class="mt-4 text-center small">
                     <span class="mr-2">
-                        <i class="fas fa-circle text-primary"></i> Direct
+                        <i class="fas fa-circle" style="color: #1B9431;"></i> 民主進步黨（51）
                     </span>
                     <span class="mr-2">
-                        <i class="fas fa-circle text-success"></i> Social
+                        <i class="fas fa-circle" style="color: #000095;"></i> 中國國民黨（52）
                     </span>
                     <span class="mr-2">
-                        <i class="fas fa-circle text-info"></i> Referral
+                        <i class="fas fa-circle" style="color: #28C8C8;"></i> 台灣民眾黨（8）
+                    </span>
+                    <span class="mr-2">
+                        <i class="fas fa-circle" style="color: #999999;"></i> 無黨籍（2）
                     </span>
                 </div>
             </div>
@@ -325,5 +328,8 @@
 @endsection
 @section('body-load')
     <script src="{{ asset('js/vendor/Chart.min.js') }}"></script>
-    <script src="{{ asset('js/demo/chart-pie-demo.js') }}"></script>
+    <script>
+      const partyData = @json($partyData);
+    </script>
+    <script src="{{ asset('js/dashboard/chart-pie-party.js') }}"></script>
 @endsection

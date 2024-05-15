@@ -28,7 +28,7 @@ class MeetController extends Controller
         $terms = self::getTermOptions($termStat);
         $term = (request()->query('term')) ?? $terms[0];
         $sessionPeriods = self::getSessionPeriods($termStat, $term);
-        $sessionPeriod = (request()->query('sessionPeriod')) ?? 'all';
+        $sessionPeriod = (request()->query('sessionPeriod')) ?? $sessionPeriods[0];
         $meets = self::requestMeets($term, $sessionPeriod);
         $gazettes = self::requestAllGzaettes();
         $rows = [];
@@ -65,7 +65,6 @@ class MeetController extends Controller
             //$row['written_i12n_count'] = count(self::requestWrittenI12n($meet));
             $rows[] = $row;
         }
-        array_unshift($sessionPeriods, 'all');
         return view('meet.list', [
             'nav' => 'meets',
             'terms' => $terms,

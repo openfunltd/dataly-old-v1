@@ -9,14 +9,27 @@
     </div>
     <!-- DataTales -->
     <div class="card shadow mb-4">
-      <div class="card-header py-3">
+      <div class="card-header py-1">
         <span>屆期：</span>
         @foreach ($terms as $term)
         <a href="{{ route('bills', ['term' => $term])}}"
-          class="btn {{ ($term == $parameters['term']) ? 'btn-danger' : 'btn-info'}} btn-sm"
+          class="btn {{ ($term == $params['term']) ? 'btn-danger' : 'btn-info'}} btn-sm"
         >
           <span class="text">{{ __('第 :term 屆', ['term' => $term])}}</span>
         </a>
+        @endforeach
+      </div>
+      <div class="card-header py-1">
+        <span>會期：</span>
+        @foreach ($sessionPeriods as $sessionPeriod)
+            <a href="{{ route('bills', [
+                'term' => $params['term'],
+                'sessionPeriod' => $sessionPeriod,
+            ])}}"
+            class="btn {{ ($sessionPeriod == $params['sessionPeriod']) ? 'btn-danger' : 'btn-info'}}
+                btn-sm">
+                <span class="text">{{ __('第 :sp 會期', ['sp' => $sessionPeriod])}}</span>
+            </a>
         @endforeach
       </div>
       <div class="card-body">

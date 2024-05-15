@@ -13,29 +13,30 @@ class BillController extends Controller
         $terms = self::getTermOptions($termStat);
         $term = (request()->query('term')) ?? $terms[0];
         $sessionPeriods = self::getSessionPeriods($termStat, $term);
+        $sessionPeriod = (request()->query('sessionPeriod')) ?? $sessionPeriods[0];
         $rows = [];
-        foreach ($sessionPeriods as $sessionPeriod) {
-            $bills = self::requestBills($term, $sessionPeriod);
-            $law_name_map = self::requestLawNameMap($bills);
-            foreach ($bills as $bill) {
-                $row = [];
-                $row['links'] = self::buildLinks($bill);
-                $row['law_diff'] = array_key_exists('對照表', $bill);
-                $row['initial_date'] = self::getInitialDate($bill);
-                $row['bill_id'] = $bill['提案編號'] ?? 'No Data';
-                $row['sessionPeriod'] = $bill['會期'] ?? '- No Data';
-                $row['proposer'] = self::getProposer($bill);
-                $row['bill_name'] = self::parseBillName($bill);
-                $row['law_names'] = self::getLawNames($bill, $law_name_map);
-                $rows[] = $row;
-            }
+        $bills = self::requestBills($term, $sessionPeriod);
+        $law_name_map = self::requestLawNameMap($bills);
+        foreach ($bills as $bill) {
+            $row = [];
+            $row['links'] = self::buildLinks($bill);
+            $row['law_diff'] = array_key_exists('對照表', $bill);
+            $row['initial_date'] = self::getInitialDate($bill);
+            $row['bill_id'] = $bill['提案編號'] ?? 'No Data';
+            $row['sessionPeriod'] = $bill['會期'] ?? '- No Data';
+            $row['proposer'] = self::getProposer($bill);
+            $row['bill_name'] = self::parseBillName($bill);
+            $row['law_names'] = self::getLawNames($bill, $law_name_map);
+            $rows[] = $row;
         }
         return view('bill.list', [
             'nav' => 'bills',
             'terms' => $terms,
+            'sessionPeriods' => $sessionPeriods,
             'rows' => $rows,
-            'parameters' => [
+            'params' => [
                 'term' => $term,
+                'sessionPeriod' => $sessionPeriod
             ],
         ]);
     }

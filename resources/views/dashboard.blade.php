@@ -323,3 +323,7 @@
     </div>
 </div>
 @endsection
+@section('body-load')
+    <script src="{{ asset('js/vendor/Chart.min.js') }}"></script>
+    <script src="{{ asset('js/demo/chart-pie-demo.js') }}"></script>
+@endsection

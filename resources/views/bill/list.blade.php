@@ -28,7 +28,11 @@
             ])}}"
             class="btn {{ ($sessionPeriod == $params['sessionPeriod']) ? 'btn-danger' : 'btn-info'}}
                 btn-sm">
-                <span class="text">{{ __('第 :sp 會期', ['sp' => $sessionPeriod])}}</span>
+                @if ($sessionPeriod == 'all')
+                    <span class="text">{{ __('不篩選')}}</span>
+                @else
+                    <span class="text">{{ __('第 :sp 會期', ['sp' => $sessionPeriod])}}</span>
+                @endif
             </a>
         @endforeach
       </div>

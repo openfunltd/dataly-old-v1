@@ -14,21 +14,28 @@ class BillController extends Controller
         $term = (request()->query('term')) ?? $terms[0];
         $sessionPeriods = self::getSessionPeriods($termStat, $term);
         $sessionPeriod = (request()->query('sessionPeriod')) ?? $sessionPeriods[0];
-        $rows = [];
-        $bills = self::requestBills($term, $sessionPeriod);
-        $law_name_map = self::requestLawNameMap($bills);
-        foreach ($bills as $bill) {
-            $row = [];
-            $row['links'] = self::buildLinks($bill);
-            $row['law_diff'] = array_key_exists('對照表', $bill);
-            $row['initial_date'] = self::getInitialDate($bill);
-            $row['bill_id'] = $bill['提案編號'] ?? 'No Data';
-            $row['sessionPeriod'] = $bill['會期'] ?? '- No Data';
-            $row['proposer'] = self::getProposer($bill);
-            $row['bill_name'] = self::parseBillName($bill);
-            $row['law_names'] = self::getLawNames($bill, $law_name_map);
-            $rows[] = $row;
+        $targetSessionPeriods = [$sessionPeriod];
+        if ($sessionPeriod == 'all') {
+            $targetSessionPeriods = $sessionPeriods;
         }
+        $rows = [];
+        foreach ($targetSessionPeriods as $targetSessionPeriod) {
+            $bills = self::requestBills($term, $targetSessionPeriod);
+            $law_name_map = self::requestLawNameMap($bills);
+            foreach ($bills as $bill) {
+                $row = [];
+                $row['links'] = self::buildLinks($bill);
+                $row['law_diff'] = array_key_exists('對照表', $bill);
+                $row['initial_date'] = self::getInitialDate($bill);
+                $row['bill_id'] = $bill['提案編號'] ?? 'No Data';
+                $row['sessionPeriod'] = $bill['會期'] ?? '- No Data';
+                $row['proposer'] = self::getProposer($bill);
+                $row['bill_name'] = self::parseBillName($bill);
+                $row['law_names'] = self::getLawNames($bill, $law_name_map);
+                $rows[] = $row;
+            }
+        }
+        array_unshift($sessionPeriods, 'all');
         return view('bill.list', [
             'nav' => 'bills',
             'terms' => $terms,

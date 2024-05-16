@@ -65,6 +65,7 @@ class MeetController extends Controller
             //$row['written_i12n_count'] = count(self::requestWrittenI12n($meet));
             $rows[] = $row;
         }
+        array_unshift($sessionPeriods, 'all');
         return view('meet.list', [
             'nav' => 'meets',
             'terms' => $terms,

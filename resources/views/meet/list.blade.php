@@ -65,7 +65,11 @@
                         @endfor
                     </td>
                     {{-- 會議 ID --}}
-                    <td>{{ $row['meet_id'] }}</td>
+                    <td>
+                        <a href="{{ route('meet', ['meet_id' => $row['meet_id']]) }}">
+                            {{ $row['meet_id'] }}
+                        </a>
+                    </td>
                     {{-- 會議類型/委員會 --}}
                     <td>
                         <?php $keys = array_keys($row['type_or_committee']); ?>

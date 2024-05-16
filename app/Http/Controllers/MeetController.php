@@ -78,6 +78,18 @@ class MeetController extends Controller
         ]);
     }
 
+    public function meet($meet_id)
+    {
+        $data = self::requestMeet($meet_id);
+        if (is_null($data) || ! array_key_exists('meet_id', $data)) {
+            abort(404);
+        }
+        return view('meet.single', [
+            'nav' => 'meet',
+            'meet_data' => $data['meet_data'],
+        ]);
+    }
+
     private function requestTermStat()
     {
         $url = 'https://ly.govapi.tw/stat';
@@ -225,5 +237,15 @@ class MeetController extends Controller
             return self::$comt_map[$comt_id];
         }
         return null;
+    }
+
+    private function requestMeet($meet_id)
+    {
+        $url = "http://ly.govapi.tw/meet/$meet_id";
+        $res = Http::get($url);
+        if (! $res->successful()) {
+            return null;
+        }
+        return $res->json();
     }
 }

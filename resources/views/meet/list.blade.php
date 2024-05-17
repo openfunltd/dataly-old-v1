@@ -44,6 +44,7 @@
               <tr>
                 <th class="dt-head-center">@lang('日期')</th>
                 <th class="dt-head-center">@lang('會議 ID')</th>
+                <th class="dt-head-center">@lang('會期')</th>
                 <th class="dt-head-center">@lang('會議類型/委員會')</th>
                 <th class="dt-head-center">@lang('會議名稱')</th>
                 <th class="dt-head-center">@lang('會議頁面')</th>
@@ -71,6 +72,8 @@
                             {{ $row['meet_id'] }}
                         </a>
                     </td>
+                    {{-- 會期 --}}
+                    <td>{{ $row['sessionPeriod'] }}</td>
                     {{-- 會議類型/委員會 --}}
                     <td>
                         <?php $keys = array_keys($row['type_or_committee']); ?>
@@ -132,6 +135,7 @@
               <tr>
                 <th>日期</th>
                 <th>會議 ID</th>
+                <th>會期</th>
                 <th>會議類型/委員會</th>
                 <th>會議名稱</th>
                 <th></th>

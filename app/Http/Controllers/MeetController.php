@@ -36,6 +36,7 @@ class MeetController extends Controller
             $row = [];
             $row['dates'] = $meet['dates'];
             $row['meet_id'] = $meet['meet_id'];
+            $row['sessionPeriod'] = $meet['sessionPeriod'];
             if (in_array($meet['meet_type'], ['院會', '黨團協商', '全院委員會'])) {
                 $row['type_or_committee'] = [$meet['meet_type']];
             } else {

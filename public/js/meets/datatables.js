@@ -6,7 +6,7 @@ $(document).ready(function() {
         .columns()
         .every(function () {
           let column = this;
-          if (! [0, 1, 2, 3].includes(this.index()) || this.footer() === null || column.footer() === null) {
+          if (! [0, 1, 2, 3, 4].includes(this.index()) || this.footer() === null || column.footer() === null) {
             return;
           }
           let title = this.footer().textContent;
@@ -23,6 +23,7 @@ $(document).ready(function() {
     keys: true,
     columnDefs: [
         { orderable: false, targets: 'nosort' },
+        { className: 'dt-body-center', targets: [2]},
     ],
     order: [0, 'desc'],
   });

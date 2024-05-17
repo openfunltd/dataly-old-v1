@@ -12,8 +12,6 @@
             會議資料
         </h6>
     </a>
-    <div class="text-right">
-    </div>
     <div class="collapse show" id="collapseCardMeetData">
         <div class="card-body">
             <?php $keys = array_keys($meet_data); ?>
@@ -24,7 +22,7 @@
                         <p id="meetdata-{{ $data['date'] }}" class="text-lg text-primary">日期：{{ $data['date']}}</p>
                     </div>
                     <div class="col">
-                        <p class="text-right">本區資料來自 <a href="https://data.ly.gov.tw/getds.action?id=42">立法院資料開放平台</a></p>
+                        <p class="text-right">本區資料來自<a href="https://data.ly.gov.tw/getds.action?id=42">立法院資料開放平台</a></p>
                     </div>
                 </div>
                 @else
@@ -40,7 +38,7 @@
                                     @if (is_string($val) && strpos($val, 'https://') === 0)
                                         <a href="{{ $val }}">{{ $val }}</a>
                                     @elseif (is_array($val) && empty($val))
-                                        Empty Array
+                                        {{ json_encode($val, JSON_UNESCAPED_UNICODE) }}
                                     @elseif (is_null($val) || $val == 'null')
                                         Null
                                     @else
@@ -56,6 +54,47 @@
                     <br>
                 @endif
             @endforeach
+        </div>
+    </div>
+</div>
+<div id="sectionMeetNode" class="card shadow mb-4">
+    <a href="#collapseCardSectionMeetNote" class="d-block card-header py-3" data-toggle="collapse"
+        role="button" aria-expanded="true" aria-controls="collapseCardSectionMeetNote">
+        <h6 class="m-0 font-weight-bold text-primary">
+            議事錄
+        </h6>
+    </a>
+    <div class="collapse show" id="collapseCardSectionMeetNote">
+        <div class="card-body">
+            @if (is_null($section_meet_note))
+                <p>無資料</p>
+            @else
+                <p class="text-right">
+                    委員會議事錄是從<a href="{{ $section_meet_note['ppg_url'] }}">會議紀錄</a>抓取，院會議事錄是從公報抓取
+                </p>
+                <div class="table-responsive">
+                    <table class="table table-sm" width="100%" cellspacing="0">
+                        <tbody>
+                            @foreach ($section_meet_note as $key => $val)
+                            <tr>
+                                <th scpoe="row" class="col-3">{{ $key }}</th>
+                                <td class="col-9">
+                                    @if (is_string($val) && strpos($val, 'https://') === 0)
+                                        <a href="{{ $val }}">{{ $val }}</a>
+                                    @elseif (is_array($val))
+                                        {{ json_encode($val, JSON_UNESCAPED_UNICODE) }}
+                                    @elseif (is_null($val) || $val == 'null')
+                                        Null
+                                    @else
+                                        {{ $val }}
+                                    @endif
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @endif
         </div>
     </div>
 </div>

@@ -87,6 +87,7 @@ class MeetController extends Controller
         return view('meet.single', [
             'nav' => 'meet',
             'meet_data' => $data['meet_data'],
+            'section_meet_note' => array_key_exists('議事錄', $data) ? $data['議事錄'] : null,
         ]);
     }
 

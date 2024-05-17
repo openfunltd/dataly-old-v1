@@ -95,7 +95,9 @@
                         @endfor
                     </td>
                     {{-- 議事錄 --}}
-                    <td>{{ $row['proceedings'] }}</td>
+                    <td>
+                        <a href="{{ $meet_url . '#sectionMeetNode' }}">{{ $row['proceedings'] }}</a>
+                    </td>
                     {{-- Open Data 發言紀錄 --}}
                     <td>
                         <?php $keys = array_keys($row['speeches']); ?>

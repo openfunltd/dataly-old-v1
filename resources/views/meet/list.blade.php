@@ -66,7 +66,8 @@
                     </td>
                     {{-- 會議 ID --}}
                     <td>
-                        <a href="{{ route('meet', ['meet_id' => $row['meet_id']]) }}">
+                        <?php $meet_url = route('meet', ['meet_id' => $row['meet_id']]); ?>
+                        <a href="{{ $meet_url }}">
                             {{ $row['meet_id'] }}
                         </a>
                     </td>
@@ -85,7 +86,9 @@
                     {{-- 會議頁面 --}}
                     <td>
                         @for ($i = 0; $i < count($row['dates']); $i++)
-                            {{ $row['dates'][$i] }}
+                            <a href="{{ $meet_url . '#meetdata-' . $row['dates'][$i] }}">
+                                {{ $row['dates'][$i] }}
+                            </a>
                             @if ($i < count($row['dates']) - 1)
                                 <br>
                             @endif

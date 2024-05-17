@@ -21,14 +21,14 @@
                 @if ($idx == reset($keys))
                 <div class="row">
                     <div class="col">
-                        <p class="text-lg text-primary">日期：{{ $data['date']}}</p>
+                        <p id="meetdata-{{ $data['date'] }}" class="text-lg text-primary">日期：{{ $data['date']}}</p>
                     </div>
                     <div class="col">
                         <p class="text-right">本區資料來自 <a href="https://data.ly.gov.tw/getds.action?id=42">立法院資料開放平台</a></p>
                     </div>
                 </div>
                 @else
-                    <p class="text-lg text-primary">日期：{{ $data['date']}}</p>
+                    <p id="meetdata-{{ $data['date'] }}" class="text-lg text-primary">日期：{{ $data['date']}}</p>
                 @endif
                 <div class="table-responsive">
                     <table class="table table-sm" width="100%" cellspacing="0">

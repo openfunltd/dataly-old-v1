@@ -26,4 +26,26 @@ class LyAPI
         }
         return $data;
     }
+
+    public static function batchRequest($base_url, $ids, $param_prefix)
+    {
+        //一次查詢多筆時使用
+        $rough_estimate = (2048 - strlen($base_url)) / strlen('&' . $param_prefix . urlencode($ids[0]));
+        $batch_cnt = $rough_estimate - 10;
+        $params = array_map(function ($id) use ($param_prefix) {
+            return $param_prefix . urlencode($id);
+        }, $ids);
+        $data = [];
+        for ($i=0; $i < count($params); $i += $batch_cnt) {
+            $batch = array_slice($params, $i, $batch_cnt);
+            $url = sprintf($base_url, implode('&', $batch));
+            $res = Http::get($url);
+            if ($res->successful()) {
+                $batch_data = $res->json()['aggs'];
+                $batch_data = $batch_data[array_keys($batch_data)[0]];
+                $data = array_merge($data, $batch_data);
+            }
+        }
+        return $data;
+    }
 }

@@ -89,6 +89,7 @@ class MeetController extends Controller
             'nav' => 'meet',
             'meet_data' => $data['meet_data'],
             'section_meet_note' => array_key_exists('議事錄', $data) ? $data['議事錄'] : null,
+            'speeches' => array_key_exists('發言紀錄', $data) ? $data['發言紀錄'] : null,
         ]);
     }
 

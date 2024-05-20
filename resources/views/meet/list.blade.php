@@ -105,7 +105,9 @@
                     <td>
                         <?php $keys = array_keys($row['speeches']); ?>
                         @foreach ($row['speeches'] as $key => $item)
-                            {{ $item['date'] }}：{{ $item['legislator_cnt'] }}人
+                            <a href="{{ $meet_url . '#speeches-' . $item['date'] }}">
+                                {{ $item['date'] }}：{{ $item['legislator_cnt'] }}人
+                            </a>
                             @if ($key != end($keys))
                                 <br>
                             @endif

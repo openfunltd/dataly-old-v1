@@ -32,6 +32,7 @@ class MeetController extends Controller
         $sessionPeriod = (request()->query('sessionPeriod')) ?? $sessionPeriods[0];
         $meets = self::requestMeets($term, $sessionPeriod);
         $gazettes = self::requestAllGzaettes();
+        $ivodsCnt  = self::requestIvodCount($meets);
         $rows = [];
         foreach ($meets as $meet) {
             $row = [];
@@ -63,7 +64,7 @@ class MeetController extends Controller
                     $row['gazette_records'][] = $record;
                 }
             }
-            //$row['ivodCount'] = self::requestIvodCount($meet);
+            $row['ivod_cnt'] = $ivodsCnt[$meet['meet_id']] ?? [];
             //$row['written_i12n_count'] = count(self::requestWrittenI12n($meet));
             $rows[] = $row;
         }
@@ -209,26 +210,22 @@ class MeetController extends Controller
        return $ivods;
     }
 
-    private function requestIvodCount($meet)
+    private function requestIvodCount($meets)
     {
-        $meet_id = $meet['meet_id'];
-        $dates = $meet['dates'];
-        $url = "https://ly.govapi.tw/meet/$meet_id/ivod";
-        $res = Http::get($url);
-        if (! $res->successful()) {
-            return [];
-        }
-        $res_json = $res->json();
-        $ivods = $res_json['ivods'];
-        $ivodCount = [];
-        foreach ($ivods as $ivod) {
-            if (array_key_exists($ivod['date'], $ivodCount)) {
-                $ivodCount[$ivod['date']]++;
-            } else {
-                $ivodCount[$ivod['date']] = 1;
+        $meet_ids = array_map(function ($meet) {
+            return $meet['meet_id'];
+        }, $meets);
+        $base_url = "https://ly.govapi.tw/ivod/?%s&aggs=meet_id,date&size=0";
+        $data = LyAPI::batchRequest($base_url, $meet_ids, 'meet_id=');
+        $ivod_cnt = [];
+        foreach ($data as $agg) {
+            $date = date('Y-m-d', $agg['date'] / 1000);
+            if (!isset($ivod_cnt[$agg['meet_id']])) {
+                $ivod_cnt[$agg['meet_id']] = [];
             }
+            $ivod_cnt[$agg['meet_id']][$date] = $agg['count'];
         }
-        return $ivodCount;
+        return $ivod_cnt;
     }
 
     private function requestWrittenI12n($meet)

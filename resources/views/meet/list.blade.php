@@ -51,6 +51,7 @@
                 <th class="dt-head-center">@lang('議事錄')</th>
                 <th class="dt-head-center">@lang('Open Data 發言紀錄')</th>
                 <th class="dt-head-center">@lang('公報紀錄')</th>
+                <th class="dt-head-center">@lang('iVod數量')</th>
               </tr>
             </thead>
             <tbody>
@@ -130,6 +131,19 @@
                         公報出版日：{{ $row['gazette_publish_date'] }}
                         @endif
                     </td>
+                    {{-- 公報紀錄 --}}
+                    <td>
+                        <?php $keys = array_keys($row['ivod_cnt']); ?>
+                        @foreach ($row['ivod_cnt'] as $date => $cnt)
+                            <a href="{{ $meet_url . '#ivods'}}">
+                                {{ $date}}
+                            </a>
+                            :{{ $cnt }}
+                            @if ($date != end($keys))
+                                <br>
+                            @endif
+                        @endforeach
+                    </td>
                 </tr>
             @endforeach
             </tbody>
@@ -140,6 +154,7 @@
                 <th>會期</th>
                 <th>會議類型/委員會</th>
                 <th>會議名稱</th>
+                <th></th>
                 <th></th>
                 <th></th>
                 <th></th>

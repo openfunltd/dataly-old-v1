@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use App\Utils\LyAPI;
 
 class MeetController extends Controller
 {
@@ -85,11 +86,13 @@ class MeetController extends Controller
         if (is_null($data) || ! array_key_exists('meet_id', $data)) {
             abort(404);
         }
+        $ivods = self::requestIvods($meet_id);
         return view('meet.single', [
             'nav' => 'meet',
             'meet_data' => $data['meet_data'],
             'section_meet_note' => array_key_exists('議事錄', $data) ? $data['議事錄'] : null,
             'speeches' => array_key_exists('發言紀錄', $data) ? $data['發言紀錄'] : null,
+            'ivods' => $ivods,
         ]);
     }
 
@@ -199,11 +202,18 @@ class MeetController extends Controller
         return $gazette['published_at'];
     }
 
+    private function requestIvods($meet_id)
+    {
+       $url = "https://ly.govapi.tw/meet/$meet_id/ivod"; 
+       $ivods = LyAPI::paginationRequest($url, 'ivods');
+       return $ivods;
+    }
+
     private function requestIvodCount($meet)
     {
         $meet_id = $meet['meet_id'];
         $dates = $meet['dates'];
-        $url = "http://ly.govapi.tw/meet/$meet_id/ivod";
+        $url = "https://ly.govapi.tw/meet/$meet_id/ivod";
         $res = Http::get($url);
         if (! $res->successful()) {
             return [];

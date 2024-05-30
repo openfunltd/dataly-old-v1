@@ -3,6 +3,7 @@ $items = [
     'meets' => ['會議', 'fas fa-fw fa-table'],
     'bills' => ['提案', 'fas fa-fw fa-table'],
     'legislators' => ['立委', 'fas fa-fw fa-table'],
+    'ivods' => ['iVOD', 'fas fa-fw fa-table'],
 ];
 ?>
 <!DOCTYPE html>

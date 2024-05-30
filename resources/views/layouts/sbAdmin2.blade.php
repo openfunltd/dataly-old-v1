@@ -1,3 +1,10 @@
+<?php
+$items = [
+    'meets' => ['會議', 'fas fa-fw fa-table'],
+    'bills' => ['提案', 'fas fa-fw fa-table'],
+    'legislators' => ['立委', 'fas fa-fw fa-table'],
+];
+?>
 <!DOCTYPE html>
 <html lang="zh-tw">
 <head>
@@ -46,22 +53,13 @@
             <div class="sidebar-heading">
                 Data
             </div>
-            <li class="nav-item {{ ($nav == 'meets') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('meets') }}">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>@lang('會議 /meets')</span></a>
-            </li>
-            <li class="nav-item {{ ($nav == 'bills') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('bills') }}">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>提案 /bills</span></a>
-            </li>
-            <li class="nav-item {{ ($nav == 'legislators') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('legislators') }}">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>立委 /legislators</span></a>
-            </li>
-
+            @foreach ($items as $key => $item)
+                <li class="nav-item {{ ($nav == $key) ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route($key) }}">
+                        <i class="{{ $item[1] }}"></i>
+                        <span>{{ $item[0] }} /{{ $key }}</span></a>
+                </li>
+            @endforeach
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 

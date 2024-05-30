@@ -6,6 +6,25 @@ use Illuminate\Support\Facades\Http;
 
 class LyAPI
 {
+    public static $reasons = null;
+
+    public static function apiQuery($url, $reason)
+    {
+        if (env('LYAPI_HOST')) {
+            $url = 'https://' . env('LYAPI_HOST') . $url;
+        } else {
+            $url = 'https://ly.govapi.tw' . $url;
+        }
+
+        $res = Http::get($url);
+        if (is_null(self::$reasons)) {
+            self::$reasons = [];
+        }
+        self::$reasons[$reason] = [$url, $reason];
+        $res_json = $res->object();
+        return $res_json;
+    }
+
     public static function paginationRequest($url, $target)
     {
         $res = Http::get($url);

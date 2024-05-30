@@ -51,6 +51,7 @@
                             <th>發言時間</th>
                             <th>影片長度</th>
                             <th>IVOD連結</th>
+                            <th>AI逐字稿</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -67,6 +68,11 @@
                             </td>
                             <td>
                                 <a href="{{ $ivod->url }}" target="_blank">IVOD</a>
+                            </td>
+                            <td>
+                                @if (in_array('ai-transcript', $ivod->features))
+                                有
+                                @endif
                             </td>
                         </tr>
                         @endforeach

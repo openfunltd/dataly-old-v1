@@ -16,4 +16,4 @@ use App\Http\Controllers\IVodController;
 Route::get('/ivods/{date}/{meet_id}', [IVodController::class, 'ivods'])->name('ivods');
 Route::get('/ivods/{date}', [IVodController::class, 'ivods'])->name('ivods');
 Route::get('/ivods', [IVodController::class, 'ivods'])->name('ivods');
-
+Route::get('/ivod/{ivod_id}', [IVodController::class, 'ivod'])->name('ivod');

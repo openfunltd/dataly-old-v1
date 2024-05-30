@@ -58,7 +58,9 @@
                     @foreach ($meet->ivods as $ivod)
                         <tr>
                             <td>
-                                {{ $ivod->{'委員名稱'} }}
+                                <a href="{{ route('ivod', $ivod->id) }}">
+                                    {{ $ivod->{'委員名稱'} }}
+                                </a>
                             </td>
                             <td>
                                 {{ $ivod->{'委員發言時間'} }}

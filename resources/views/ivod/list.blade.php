@@ -5,11 +5,7 @@
     <link href="{{ asset('css/meets/datatables.css') }}" rel="stylesheet">
 @endsection
 @section('content')
-    <div class="card shadow mb-4">
-        <div class="card-header py-1">
-            <h1 class="h3 mb-0 text-gray-800">{{ $date }} 會議</h1>
-        </div>
-        <div class="card-body">
+    <h1 class="h3 mb-0 text-gray-800">IVOD 列表 :: {{ $date }}</h1>
             <div class="table-responsive" style="overflow-x: auto;">
                 <table class="table table-bordered table-hover table-sm nowrap" width="100%" cellspacing="0">
                     <thead>
@@ -34,8 +30,6 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-    </div>
 
     @foreach ($meets as $meet)
     <div class="card shadow mb-4" id="{{ $meet->meet->id }}">

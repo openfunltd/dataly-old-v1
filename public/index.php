@@ -13,5 +13,9 @@ if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php'))
 require __DIR__.'/../vendor/autoload.php';
 
 // Bootstrap Laravel and handle the request...
-(require_once __DIR__.'/../bootstrap/app.php')
-    ->handleRequest(Request::capture());
+$app = (require_once __DIR__.'/../bootstrap/app.php');
+if (getenv('LARAVEL_STORAGE_PATH')) {
+    $_ENV['LARAVEL_STORAGE_PATH'] = getenv('LARAVEL_STORAGE_PATH');
+    $app->useBootstrapPath($_ENV['LARAVEL_STORAGE_PATH'] . '/bootstrap');
+}
+$app->handleRequest(Request::capture());

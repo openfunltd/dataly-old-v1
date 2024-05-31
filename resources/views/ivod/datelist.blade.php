@@ -9,6 +9,7 @@ $week_data = array('日', '一', '二', '三', '四', '五', '六');
 @endsection
 @section('content')
 <h1 class="h3 mb-0 text-gray-800">IVOD 每日列表 :: 第 {{ $term }} 屆第 {{ $sessionPeriod }} 會期</h1>
+    @include('ivod.term-choice')
             <div class="table-responsive" style="overflow-x: auto;">
                 <table class="table table-bordered table-hover table-sm nowrap" width="100%" cellspacing="0">
                     <thead>

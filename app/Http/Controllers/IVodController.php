@@ -19,9 +19,10 @@ class IVodController extends Controller
 
     public function ivods($date = null, $meet_id = null) 
     {
+        $api_stat = LyAPI::apiQuery('/stat', '查詢最新影音日期');
+        $ivod_stat = $api_stat->ivod;
         if (is_null($date)) {
-            $api_stat = LyAPI::apiQuery('/stat', '查詢最新影音日期');
-            $date = date('Y-m-d', $api_stat->ivod->max_meeting_date / 1000);
+            $date = date('Y-m-d', $ivod_stat->max_meeting_date / 1000);
         }
 
         if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
@@ -54,6 +55,9 @@ class IVodController extends Controller
             'nav' => 'ivods',
             'date' => $date,
             'meets' => $meets,
+            'term' => $ivod->meet->term ?? null,
+            'sessionPeriod' => $ivod->meet->sessionPeriod ?? null,
+            'ivod_stat' => $ivod_stat,
         ]);
     }
 
@@ -104,6 +108,7 @@ class IVodController extends Controller
             'term' => $term,
             'sessionPeriod' => $sessionPeriod,
             'dates' => $dates,
+            'ivod_stat' => $ivod_stat,
         ]);
     }
 }

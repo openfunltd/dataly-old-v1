@@ -14,7 +14,7 @@ Route::get('/legislators', [LegislatorController::class, 'legislators'])->name('
 
 use App\Http\Controllers\IVodController;
 Route::get('/ivod/datelist', [IVodController::class, 'datelist'])->name('ivods.datelist');
-Route::get('/ivod/datelist/{term}/{sessionPeriod}', [IVodController::class, 'datelist']);
+Route::get('/ivod/datelist/{term}/{sessionPeriod}', [IVodController::class, 'datelist'])->name('ivods.datelist.term');
 Route::get('/ivod/date/{date}/{meet_id}', [IVodController::class, 'ivods'])->name('ivods');
 Route::get('/ivod/date/{date}', [IVodController::class, 'ivods'])->name('ivods.date');
 Route::get('/ivod', [IVodController::class, 'ivods'])->name('ivods');

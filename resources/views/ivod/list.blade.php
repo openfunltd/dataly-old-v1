@@ -5,7 +5,8 @@
     <link href="{{ asset('css/meets/datatables.css') }}" rel="stylesheet">
 @endsection
 @section('content')
-    <h1 class="h3 mb-0 text-gray-800">IVOD 列表 :: {{ $date }}</h1>
+<h1 class="h3 mb-0 text-gray-800">IVOD 列表 :: {{ $date }}</h1>
+    <a href="{{ route('ivods.datelist') }}" class="btn btn-primary">選其他日期</a>
             <div class="table-responsive" style="overflow-x: auto;">
                 <table class="table table-bordered table-hover table-sm nowrap" width="100%" cellspacing="0">
                     <thead>

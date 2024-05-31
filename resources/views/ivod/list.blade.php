@@ -41,6 +41,9 @@
     <div class="card shadow mb-4" id="{{ $meet->meet->id }}">
         <div class="card-header py-1">
             <h1 class="h3 mb-0 text-gray-800" id="#{{ $meet->meet->id }}">{{ $meet->meet->title }}</h1>
+            <div>
+                {{ $meet->meet->{'會議名稱'} }}
+            </div>
         </div>
         <div class="card-body">
             <div class="table-responsive" style="overflow-x: auto;">

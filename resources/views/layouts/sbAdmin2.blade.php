@@ -142,8 +142,24 @@ $items = [
             <!-- Footer -->
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
+                    @if (\App\Utils\LyAPI::$reasons)
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">本頁面使用 API</h5>
+                                <ul>
+                                    @foreach (\App\Utils\LyAPI::$reasons as $reason)
+                                        <li>
+                                            <a href="{{ $reason[0] }}" target="_blank">{{ $reason[1] }}</a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    @endif
                     <div class="copyright text-center my-auto">
-                        <span>footer TODO</span>
+                        <span>
+                            {{ getenv('APP_NAME') }} 由 <a href="https://openfun.tw" target="_blank">歐噴有限公司</a> 開發，目的是是立法院資料更透明更容易被使用
+                        </span>
                     </div>
                 </div>
             </footer>

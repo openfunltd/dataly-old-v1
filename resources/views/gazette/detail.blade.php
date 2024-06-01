@@ -16,6 +16,7 @@
                             <th style="max-width: 300px">會議名稱</th>
                             <th>公報頁次</th>
                             <th>連結</th>
+                            <th>原始連結</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -27,6 +28,15 @@
                         <td style="max-width: 300px">{{ $agenda->subject }}</td>
                         <td>{{ $agenda->pageStart }} - {{ $agenda->pageEnd }}</td>
                         <td>
+                            @foreach ($agenda->htmlUrls as $url)
+                            <a href="{{ $url }}" target="_blank">HTML</a>
+                            @endforeach
+                        </td>
+                        <td>
+                            @foreach ($agenda->docUrls as $url)
+                            <a href="{{ $url }}" target="_blank">DOC</a>
+                            @endforeach
+                            <a href="{{ $agenda->ppg_gazette_url }}" target="_blank">詳情</a>
                         </td>
                     </tr>
                         @endforeach

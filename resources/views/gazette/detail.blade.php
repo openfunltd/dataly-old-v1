@@ -5,35 +5,30 @@
     <link href="{{ asset('css/meets/datatables.css') }}" rel="stylesheet">
 @endsection
 @section('content')
-<h1 class="h3 mb-0 text-gray-800">公報列表 :: {{ $year }}</h1>
-<div>
-    年份：
-    @foreach ($gazette_stat->comYears as $comYear)
-    <a href="{{ route('gazettes.year', ['year' => 1911 + $comYear->year ]) }}" class="btn btn-primary btn-sm">{{ $comYear->year + 1911}}</a>
-    @endforeach
-</div>
+<h1 class="h3 mb-0 text-gray-800">公報列表 :: {{ $gazette_id }}</h1>
             <div class="table-responsive" style="overflow-x: auto;">
                 <table class="table table-bordered table-hover table-sm nowrap" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>comYear</th>
-                            <th>comVolume</th>
-                            <th>comBookId</th>
-                            <th>出版日期</th>
+                            <th>屆期</th>
+                            <th>會期</th>
+                            <th>會議日期</th>
+                            <th style="max-width: 300px">會議名稱</th>
+                            <th>公報頁次</th>
                             <th>連結</th>
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach ($gazettes as $gazette)
-                        <tr>
-                            <td> {{ $gazette->comYear }} </td>
-                            <td> {{ $gazette->comVolume }} </td>
-                            <td> {{ $gazette->comBookId }} </td>
-                            <td> {{ $gazette->published_at }} </td>
-                            <td>
-                                <a href="{{ route('gazette', ['gazette_id' => $gazette->gazette_id]) }}" class="btn btn-primary btn-sm">查看</a>
-                            </td>
-                        </tr>
+                    @foreach ($agendas as $agenda)
+                    <tr>
+                        <td>{{ $agenda->term }}</td>
+                        <td>{{ $agenda->sessionPeriod }}</td>
+                        <td>{{ implode(',', $agenda->meetingDate) }}</td>
+                        <td style="max-width: 300px">{{ $agenda->subject }}</td>
+                        <td>{{ $agenda->pageStart }} - {{ $agenda->pageEnd }}</td>
+                        <td>
+                        </td>
+                    </tr>
                         @endforeach
                     </tbody>
                 </table>

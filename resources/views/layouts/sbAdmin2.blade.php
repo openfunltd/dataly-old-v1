@@ -1,9 +1,10 @@
 <?php
 $items = [
-    'meets' => ['會議', 'fas fa-fw fa-table'],
-    'bills' => ['提案', 'fas fa-fw fa-table'],
-    'legislators' => ['立委', 'fas fa-fw fa-table'],
-    'ivods' => ['iVOD', 'fas fa-fw fa-table'],
+    'meets' => ['會議', 'fas fa-fw fa-calendar-day'],
+    'bills' => ['提案', 'fas fa-fw fa-file-alt'],
+    'legislators' => ['立委', 'fas fa-fw fa-users'],
+    'ivods' => ['iVOD', 'fas fa-fw fa-video'],
+    'gazettes' => ['公報', 'fas fa-fw fa-newspaper'],
 ];
 ?>
 <!DOCTYPE html>

@@ -19,3 +19,7 @@ Route::get('/ivod/date/{date}/{meet_id}', [IVodController::class, 'ivods'])->nam
 Route::get('/ivod/date/{date}', [IVodController::class, 'ivods'])->name('ivods.date');
 Route::get('/ivod', [IVodController::class, 'ivods'])->name('ivods');
 Route::get('/ivod/show/{ivod_id}', [IVodController::class, 'ivod'])->name('ivod');
+
+use App\Http\Controllers\GazetteController;
+Route::get('/gazette', [GazetteController::class, 'gazettes'])->name('gazettes');
+Route::get('/gazette/{year}', [GazetteController::class, 'gazettes'])->name('gazettes.year');

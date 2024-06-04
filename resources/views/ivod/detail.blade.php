@@ -24,7 +24,7 @@ tr[id^=s-] {
 @section('content')
     <div class="card shadow mb-4">
         <div class="card-header py-1">
-            <h1 class="h3 mb-0 text-gray-800">{{ $ivod->委員名稱 }} @ {{ $ivod->meet->title }}</h1>
+            <h1 class="h3 mb-0 text-gray-800">{{ $ivod->委員名稱 ?? '完整' }} @ {{ $ivod->meet->title }}</h1>
         </div>
         <div class="card-body">
         <div class="row">

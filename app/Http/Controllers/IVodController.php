@@ -39,6 +39,7 @@ class IVodController extends Controller
             if (!array_key_exists($meet_id, $meets)) {
                 $meets[$meet_id] = new \StdClass;
                 if ('unknown' === $meet_id) {
+                    $meets[$meet_id]->meet = new \StdClass;
                     $meets[$meet_id]->meet->id = 'unknown';
                     $meets[$meet_id]->meet->title= '未知會議';
                 } else {

@@ -35,13 +35,13 @@ class IVodController extends Controller
 
         $meets = [];
         foreach ($ivods->ivods as $ivod) {
-            $meet_id = $ivod->meet->id ?? 'unknown';
+            $meet_id = $ivod->meet->id ?? 'unknown-' . crc32($ivod->{'會議名稱'});
             if (!array_key_exists($meet_id, $meets)) {
                 $meets[$meet_id] = new \StdClass;
-                if ('unknown' === $meet_id) {
+                if (strpos($meet_id, 'unknown') === 0) {
                     $meets[$meet_id]->meet = new \StdClass;
-                    $meets[$meet_id]->meet->id = 'unknown';
-                    $meets[$meet_id]->meet->title= '未知會議';
+                    $meets[$meet_id]->meet->id = $meet_id;
+                    $meets[$meet_id]->meet->title= preg_replace('#（事由.*#', '', $ivod->{'會議名稱'});
                 } else {
                     $meets[$meet_id]->meet = $ivod->meet;
                 }

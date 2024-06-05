@@ -1,6 +1,6 @@
 @extends('layouts.sbAdmin2')
 @section('head-load')
-    <link href="{{ asset('css/vendor/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/vendor/datatables.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/meets/custom.css') }}" rel="stylesheet">
     <link href="{{ asset('css/meets/datatables.css') }}" rel="stylesheet">
 <style>
@@ -8,7 +8,7 @@ div.top-div {
     margin-top: 20px;
 }
 
-#subtitle-table td {
+#subtitleTable td {
   border: 1px solid black;
 }
 
@@ -34,7 +34,7 @@ tr[id^=s-] {
                     <span id="text">0</span>
                 </div>
                 <div>
-                    <table id="subtitle-table" class="table table-hover table-sm">
+                    <table id="subtitleTable" class="table table-hover table-sm">
                         <thead>
                             <tr>
                                 <th>Start Time</th>
@@ -43,8 +43,8 @@ tr[id^=s-] {
                             </tr>
                         </thead>
                         <tbody>
-							@foreach ($ivod->transcript->whisperx->result->segments ?? [] as $segment)
-                            <tr>
+                            @foreach ($ivod->transcript->whisperx->result->segments ?? [] as $idx => $segment)
+                            <tr id="s-{{ $idx }}">
                                 <td>{{ sprintf("%02d:%02d:%02d,%03d", $segment->start / 3600, $segment->start / 60 % 60, $segment->start % 60, (1000 * $segment->start) % 1000) }}</td>
                                 <td>{{ sprintf("%02d:%02d:%02d,%03d", $segment->end / 3600, $segment->end / 60 % 60, $segment->end % 60, (1000 * $segment->end) % 1000) }}</td>
                                 <td>{{ $segment->text }}</td>
@@ -55,21 +55,7 @@ tr[id^=s-] {
                 </div>
             </div>
             <div class="col-md-12 col-lg-6">
-				<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 				<video id="video" controls width="100%"></video>
-<script>
-if(Hls.isSupported()) {
-	var video = document.getElementById('video');
-	var hls = new Hls();
-	hls.loadSource(@json($ivod->video_url));
-	hls.attachMedia(video);
-	hls.on(Hls.Events.MANIFEST_PARSED,function() {
-		video.play();
-	});
-}
-</script>
-
-
             </div>
         </div>
     </div>
@@ -77,6 +63,21 @@ if(Hls.isSupported()) {
 @endsection
 @section('body-load')
     <script src="{{ asset('js/vendor/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('js/vendor/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('js/meets/datatables.js') }}"></script>
+    <script src="{{ asset('js/vendor/datatables.min.js')}}"></script>
+    <script src="{{ asset('js/vendor/hls.js') }}"></script>
+    <script>
+        var subtitles = @json($ivod->transcript->whisperx->result->segments);
+    </script>
+    <script src="{{ asset('js/ivods/datatables.js') }}"></script>
+    <script>
+    if(Hls.isSupported()) {
+        var video = document.getElementById('video');
+        var hls = new Hls();
+        hls.loadSource(@json($ivod->video_url));
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED,function() {
+            video.play();
+        });
+    }
+    </script>
 @endsection

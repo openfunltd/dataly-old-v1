@@ -25,7 +25,6 @@ video.addEventListener("timeupdate", function(event) {
   }
   timeCache = time;
   desiredIndex = timecodeBinarySearch(subtitles, time);
-  console.log('desiredIndex', desiredIndex);
   if (desiredIndex == -1) {
     return;
   }
@@ -80,7 +79,6 @@ function timecodeBinarySearch(subtitles, time) {
 function compareTimeCode(data, desiredTime) {
   startTime = data['start'];
   endTime = data['end'];
-  console.log(startTime, endTime, desiredTime);
   if (startTime > desiredTime) {
     return 0;
   }

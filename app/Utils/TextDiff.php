@@ -24,9 +24,6 @@ class TextDiff
 
         unlink($input);
         unlink($output);
-        //dd($contents);
-        //dd(json_encode($contents));
-        dd($result, $ret);
         return $result;
     } 
 }

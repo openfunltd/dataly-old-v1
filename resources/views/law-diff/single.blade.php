@@ -8,7 +8,7 @@
     </div>
     @include('partials.law-diff.related_bill_list')
     <div class="row">
-        <div class="col-lg-2">
+        <div class="col-lg-2 law-idx-list">
             @include('partials.law-diff.law_idx_list')
         </div>
         <div class="col-lg-10">

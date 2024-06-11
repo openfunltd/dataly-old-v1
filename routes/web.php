@@ -24,3 +24,6 @@ use App\Http\Controllers\GazetteController;
 Route::get('/gazette', [GazetteController::class, 'gazettes'])->name('gazettes');
 Route::get('/gazette/year/{year}', [GazetteController::class, 'gazettes'])->name('gazettes.year');
 Route::get('/gazette/show/{gazette_id}', [GazetteController::class, 'gazette'])->name('gazette');
+
+use App\Http\Controllers\LawDiffContoller;
+Route::get('/law-diff/{bill_id}', [LawDiffContoller::class, 'lawDiff'])->name('law-diff');

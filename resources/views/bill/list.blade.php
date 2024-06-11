@@ -59,7 +59,7 @@
                   @if ($link[1] === '')
                     {{ $link[0] }}
                   @else
-                    <a href="{{ $link[1] }}" target="_blank">{{ $link[0] }}</a>
+                    <a href="{{ $link[1] }}" target="_self">{{ $link[0] }}</a>
                   @endif
                   @if ($idx < count($row['links']) - 1)
                   |

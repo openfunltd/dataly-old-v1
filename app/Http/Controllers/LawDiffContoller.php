@@ -32,7 +32,14 @@ class LawDiffContoller extends Controller
             if (! property_exists($bill, '對照表')) {
                 continue;
             }
-            $commits = $bill->對照表[0]->rows;
+
+            //hot fix for 對照表會有沒有 rows 的狀況 bill_SN: 20委11005501
+            if (! property_exists($bill->對照表[0], 'rows')) {
+                $commits = $bill->對照表[1]->rows;
+            } else {
+                $commits = $bill->對照表[0]->rows;
+            }
+
             foreach ($commits as $commit) {
                 $law_idx = self::getLawIndex($commit);
                 $isNewLawIndex = (property_exists($commit, '現行') && $commit->現行 != '');

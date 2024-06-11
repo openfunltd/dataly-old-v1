@@ -151,10 +151,17 @@ class BillController extends Controller
     {
         $billNo = $bill['billNo'];
         $law_diff = $bill['對照表'] ?? null;
+        $bill_SN = $bill['提案編號'] ?? $billNo;
         $links = [];
         $links[] = ['公報網', "https://ppg.ly.gov.tw/ppg/bills/$billNo/details"];
-        $links[] = ['對照表',
-            ($law_diff) ? "https://openfunltd.github.io/law-diff/bills.html?billNo=$billNo" : ""];
+        $links[] = [
+            '對照表',
+            ($law_diff) ? "law-diff/$bill_SN" : "",
+        ];
+        $links[] = [
+            '舊版 law-diff',
+            ($law_diff) ? "https://openfunltd.github.io/law-diff/bills.html?billNo=$billNo" : "",
+        ];
         $links[] = ['國會API', "https://ly.govapi.tw/bill/$billNo"];
         return $links;
     }

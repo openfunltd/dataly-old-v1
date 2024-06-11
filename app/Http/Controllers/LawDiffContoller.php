@@ -14,6 +14,7 @@ class LawDiffContoller extends Controller
         if (! property_exists($bill, '對照表')) {
             // when there is no 對照表
         }
+        $bill_id = $bill->billNo;
 
         $bills = LyAPI::apiQuery("/bill/{$bill_id}/related_bills", "查詢關聯提案 {$bill_id}");
         // merge with related_bills
@@ -53,11 +54,12 @@ class LawDiffContoller extends Controller
             $related_bill['initial_date'] = self::getInitialDate($bill);
             $related_bills[$bill_idx] = $related_bill;
         }
-        $result = TextDiff::prettyHtmls($diff);
+        $diff_result = TextDiff::prettyHtmls($diff);
 
         return view('law-diff.single', [
             'nav' => 'law-diff',
             'related_bills' => $related_bills,
+            'diff_result' => $diff_result,
         ]);
     }
 

@@ -46,9 +46,9 @@ class LawDiffContoller extends Controller
                 if (! array_key_exists($law_idx, $diff)) {
                    $diff[$law_idx] = []; 
                    $diff[$law_idx]['current'] = ($isNewLawIndex) ? $commit->現行 : null;
-                   $diff[$law_idx]['commits'] = [];
+                   $diff[$law_idx]['commits'] = new \stdClass();
                 }
-                $diff[$law_idx]['commits'][$bill_idx] = (property_exists($commit, '修正')) ? $commit->修正 : $commit->增訂;
+                $diff[$law_idx]['commits']->{$bill_idx} = (property_exists($commit, '修正')) ? $commit->修正 : $commit->增訂;
             }
 
             // render column values into related bills 

@@ -6,12 +6,12 @@
         <div class="table-responsive" style="overflow-x: auto;">
             <table class="table table-bordered table-hover table-sm" id="dataTable" width="100%" cellspacing="0">
                 <thead>
-                    <th class="nosort">選擇</th>
-                    <th class="nosort">法案版本</th>
-                    <th class="nosort">版本名稱</th>
-                    <th class="nosort">主提案非第一人</th>
-                    <th class="nosort">提案編號</th>
-                    <th class="nosort">提案日期</th>
+                    <th width="3%">選擇</th>
+                    <th>法案版本</th>
+                    <th>版本名稱</th>
+                    <th>主提案非第一人</th>
+                    <th width="8%">提案編號</th>
+                    <th>提案日期</th>
                 </thead>
                 <tbody>
                     @foreach ($related_bills as $related_bill)

@@ -28,6 +28,7 @@ class LawDiffContoller extends Controller
         
         $diff = [];
         $related_bills = [];
+        $bill_n_law_idx_mapping = [];
         foreach ($bills as $bill_idx => $bill) {
             if (! property_exists($bill, '對照表')) {
                 continue;
@@ -40,6 +41,10 @@ class LawDiffContoller extends Controller
                 $commits = $bill->對照表[0]->rows;
             }
 
+            $bill_n_law_indexes = [];
+            $bill_n_law_indexes['bill_idx'] = $bill_idx;
+            $bill_n_law_indexes['law_indexes'] = [];
+
             foreach ($commits as $commit) {
                 $law_idx = self::getLawIndex($commit);
                 $isNewLawIndex = (property_exists($commit, '現行') && $commit->現行 != '');
@@ -49,7 +54,9 @@ class LawDiffContoller extends Controller
                    $diff[$law_idx]['commits'] = new \stdClass();
                 }
                 $diff[$law_idx]['commits']->{$bill_idx} = (property_exists($commit, '修正')) ? $commit->修正 : $commit->增訂;
+                $bill_n_law_indexes['law_indexes'][] = $law_idx;
             }
+            $bill_n_law_idx_mapping[] = $bill_n_law_indexes;
 
             // render column values into related bills 
             $related_bill = [];
@@ -67,6 +74,7 @@ class LawDiffContoller extends Controller
             'nav' => 'law-diff',
             'related_bills' => $related_bills,
             'diff_result' => $diff_result,
+            'bill_n_law_idx_mapping' => $bill_n_law_idx_mapping,
         ]);
     }
 

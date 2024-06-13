@@ -1,4 +1,4 @@
-<div id="{{ $law_idx }}" class="card shadow mb-4">
+<div id="{{ $law_idx }}" class="diff-comparison {{ $law_idx }} card shadow mb-4">
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">{{ $law_idx }}</h6>
     </div>
@@ -20,7 +20,7 @@
                     </td>
                 </tr>
                 @foreach ($related_bills as $bill_idx => $bill)
-                    <tr>
+                    <tr class="diff {{$bill_idx}}">
                         <td>{{ $bill['version_name'] }}</td>
                         <td>
                             @if (property_exists($diff->commits, $bill_idx))

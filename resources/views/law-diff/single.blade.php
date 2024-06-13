@@ -19,5 +19,8 @@
     </div>
 @endsection
 @section('body-load')
+    <script>
+        const bill_n_law_idx_mapping = @json($bill_n_law_idx_mapping);
+    </script>
     <script src="{{ asset('js/law-diff/custom.js') }}"></script>
 @endsection

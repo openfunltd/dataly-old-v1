@@ -4,7 +4,7 @@
     </div>
     <div class="card-body">
         @foreach ($diff_result as $law_idx => $diff)
-            <a href="#{{ $law_idx }}" style="display: block;">{{ $law_idx }}</a>
+            <a class="law-idx {{ $law_idx }}" href="#{{ $law_idx }}">{{ $law_idx }}</a>
         @endforeach
     </div>
 </div>

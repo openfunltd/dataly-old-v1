@@ -1,6 +1,5 @@
 @extends('layouts.sbAdmin2')
 @section('head-load')
-    <link href="{{ asset('css/vendor/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/law-diff/custom.css') }}" rel="stylesheet">
 @endsection
 @section('content')
@@ -20,8 +19,5 @@
     </div>
 @endsection
 @section('body-load')
-    <script src="{{ asset('js/vendor/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('js/vendor/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('js/law-diff/datatables.js') }}"></script>
     <script src="{{ asset('js/law-diff/custom.js') }}"></script>
 @endsection

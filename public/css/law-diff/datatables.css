@@ -1,0 +1,33 @@
+div.dataTables_scrollBody {
+  border-left: 0px !important;
+}
+
+div.filter_adjust {
+  transform: translateY(10%);
+}
+
+table.dataTable thead td {
+  vertical-align: middle;
+}
+
+tfoot input {
+  width: 100%;
+  padding: 3px;
+  box-sizing: border-box;
+}
+
+.dt-body-center{
+  text-align: center;
+}
+
+.dt-head-center{
+  text-align: center;
+}
+
+table.dataTable tbody td {
+  vertical-align: middle;
+}
+
+table.dataTable {
+  color: black;
+}

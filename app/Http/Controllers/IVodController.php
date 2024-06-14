@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Utils\LyAPI;
+use App\Utils\IVodHelper;
 
 class IVodController extends Controller
 {
@@ -47,7 +48,8 @@ class IVodController extends Controller
                 }
                 $meets[$meet_id]->ivods = [];
             }
-            $meets[$meet_id]->meet->{'會議名稱'} = $ivod->{'會議名稱'};
+            $digested_subjects = IVodHelper::digestMeetName($ivod->{'會議名稱'});
+            $meets[$meet_id]->meet->{'會議名稱'} = implode("<br>", $digested_subjects);
             $meets[$meet_id]->meet->{'會議時間'} = $ivod->{'會議時間'};
 
             $meets[$meet_id]->ivods[] = $ivod;

@@ -25,7 +25,7 @@
                                 </a>
                             </td>
                             <td>{{ date('H:i', strtotime($meet->meet->{'會議時間'})) }}</td>
-                            <td style="word-wrap: break; align: left; max-width: 500px">{{ $meet->meet->{'會議名稱'} }}</td>
+                            <td style="word-wrap: break; align: left; max-width: 500px">{!! $meet->meet->{'會議名稱'} !!}</td>
                         </tr>
                         @endforeach
                     </tbody>

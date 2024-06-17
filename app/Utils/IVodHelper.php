@@ -4,14 +4,11 @@ namespace App\Utils;
 
 class IVodHelper
 {
-    public static function digestMeetName($meet_name)
-    {
+    public static function getSubjects($meet_name) {
         $first_order_indexes = ['一、', '二、', '三、', '四、', '五、', '六、', '七、', '八、', '九、', '十、'];
         $content = self::parseReason(trim($meet_name));
         $with_first_order_index = mb_strpos($content, $first_order_indexes[0]) === 0;
 
-        // phase1 初步清理
-        // output: $subjects
         if (! $with_first_order_index) {
             $subjects = [];
             $subjects[] = $content;
@@ -19,44 +16,10 @@ class IVodHelper
             $subjects = self::parseSubjects($content, $first_order_indexes);
         }
 
-
-        // phase2 主題提取（質詢、專案報告、提案審查）
-        // output: $digested_subjects
-        $digested_subjects = self::digestSubjects($subjects);
-
-        return $digested_subjects;
-    }
-
-    private static function parseReason($raw) {
-    $start_idx = mb_strpos($raw, "（事由：");
-    $end_idx = mb_strrpos($raw, "）");
-    $content = mb_substr($raw, $start_idx + 4, $end_idx - ($start_idx + 4));
-    $content = preg_replace('/【.*?】/', '', $content);
-    $content = trim($content);
-    return $content;
-}
-
-    private static function parseSubjects($content, $first_order_indexes)
-    {
-        $subjects = [];
-        $last_index = 0;
-        foreach ($first_order_indexes as $order => $idx) {
-            if ($order == 9) {
-                //代表有可能該會會議要處理的事項超過十個
-                $subjects[] = trim(mb_substr($content, $last_index + 2));
-            }
-            $current_index = mb_strpos($content, $first_order_indexes[$order + 1]);
-            if (! $current_index) {
-                $subjects[] = trim(mb_substr($content, $last_index + 2));
-                break;
-            }
-            $subjects[] = trim(mb_substr($content, $last_index + 2, $current_index - ($last_index + 2)));
-            $last_index = $current_index;
-        }
         return $subjects;
     }
 
-    private static function digestSubjects($subjects)
+    public static function digestSubjects($subjects)
     {
         $digested_subjects = array_map(function ($subject) {
             $digest = self::getBillSubject($subject);
@@ -110,6 +73,67 @@ class IVodHelper
         return $digested_subjects;
     }
 
+    public static function getLaws($subjects)
+    {
+        $bracket_pairs = ['「」', '（）', '《》', '『』'];
+        $bracket_starters = array_map(fn ($pairs) => mb_substr($pairs, 0, 1), $bracket_pairs);
+        $raw_texts = [];
+        foreach($subjects as $subject) {
+            $text_start_idx = null;
+            $bracket_ender = null;
+            foreach(mb_str_split($subject) as $char_idx => $char) {
+                $bracket_idx = array_search($char, $bracket_starters);
+                if ($bracket_idx !== false) {
+                    $text_start_idx = $char_idx;
+                    $bracket_ender = mb_substr($bracket_pairs[$bracket_idx], 1);
+                    continue;
+                }
+                if ($bracket_ender == $char) {
+                    $raw_texts[] = mb_substr($subject, $text_start_idx + 1, $char_idx - ($text_start_idx + 1));
+                    $text_start_idx = null;
+                    $bracket_ender = null;
+                }
+            }
+        }
+        $laws = [];
+        foreach ($raw_texts as $raw_text) {
+            $law = self::extractLawName($raw_text);
+            if (isset($law) && ! in_array($law, $laws)) {
+                $laws[] = $law;
+            }
+        }
+        return $laws;
+    }
+
+    private static function parseReason($raw) {
+    $start_idx = mb_strpos($raw, "（事由：");
+    $end_idx = mb_strrpos($raw, "）");
+    $content = mb_substr($raw, $start_idx + 4, $end_idx - ($start_idx + 4));
+    $content = preg_replace('/【.*?】/', '', $content);
+    $content = trim($content);
+    return $content;
+    }
+
+    private static function parseSubjects($content, $first_order_indexes)
+    {
+        $subjects = [];
+        $last_index = 0;
+        foreach ($first_order_indexes as $order => $idx) {
+            if ($order == 9) {
+                //代表有可能該會會議要處理的事項超過十個
+                $subjects[] = trim(mb_substr($content, $last_index + 2));
+            }
+            $current_index = mb_strpos($content, $first_order_indexes[$order + 1]);
+            if (! $current_index) {
+                $subjects[] = trim(mb_substr($content, $last_index + 2));
+                break;
+            }
+            $subjects[] = trim(mb_substr($content, $last_index + 2, $current_index - ($last_index + 2)));
+            $last_index = $current_index;
+        }
+        return $subjects;
+    }
+
     private static function getBillSubject($subject)
     {
         $keyword = '擬具';
@@ -130,15 +154,8 @@ class IVodHelper
                 }
             }
             //擷取提案法條名稱中母法名稱
-            $law_end_idx1 = mb_strrpos($law_raw, '法');
-            $law_end_idx2 = mb_strrpos($law_raw, '條例');
-            if ($law_end_idx1) {
-                $law = mb_substr($law_raw, 0, $law_end_idx1 + 1);
-            } else if ($law_end_idx2) {
-                $law = mb_substr($law_raw, 0, $law_end_idx2 + 2);
-            } else {
-                $law = $law_raw;
-            }
+            $law = self::extractLawName($law_raw) ?? $law;
+
             //辨認 commit 是全新、修正或增訂
             $isUpdate = mb_strpos($law_raw, '修正');
             $isAppend = mb_strpos($law_raw, '增訂');
@@ -161,5 +178,19 @@ class IVodHelper
             return ['i12n', $subject];
         }
         return false;
+    }
+
+    private static function extractLawName($raw_text)
+    {
+        $law_end_idx1 = mb_strrpos($raw_text, '法');
+        $law_end_idx2 = mb_strrpos($raw_text, '條例');
+        $exception_end_idx1 = mb_strrpos($raw_text, '作法');
+        $law_name = null;
+        if ($law_end_idx1 && $law_end_idx1 != $exception_end_idx1 + 1) {
+            $law_name = mb_substr($raw_text, 0, $law_end_idx1 + 1);
+        } else if ($law_end_idx2) {
+            $law_name = mb_substr($raw_text, 0, $law_end_idx2 + 2);
+        }
+        return $law_name;
     }
 }

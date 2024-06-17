@@ -48,9 +48,21 @@ class IVodController extends Controller
                 }
                 $meets[$meet_id]->ivods = [];
             }
-            $digested_subjects = IVodHelper::digestMeetName($ivod->{'會議名稱'});
+            $subjects = IVodHelper::getSubjects($ivod->{'會議名稱'});
+            $digested_subjects = IVodHelper::digestSubjects($subjects);
+            $related_laws = IVodHelper::getLaws($subjects);
+            foreach ($related_laws as &$law) {
+                $law_name = $law;
+                $res = LyAPI::apiQuery("/law?q=$law_name", "查詢 law_id {$law_name}");
+                $law_id = null;
+                if (count($res->laws) > 0 && $res->laws[0]->name == $law_name) {
+                    $law_id = $res->laws[0]->id;
+                }
+                $law = sprintf('%s(<a href="https://ly.govapi.tw/law/%s">%s</a>)', $law_name, $law_id, $law_id);
+            }
             $meets[$meet_id]->meet->{'會議名稱'} = implode("<br>", $digested_subjects);
             $meets[$meet_id]->meet->{'會議時間'} = $ivod->{'會議時間'};
+            $meets[$meet_id]->meet->{'關聯法律'} = implode("<br>", $related_laws);
 
             $meets[$meet_id]->ivods[] = $ivod;
         }

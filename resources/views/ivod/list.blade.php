@@ -14,6 +14,7 @@
                             <th>會議</th>
                             <th>時間</th>
                             <th>事由</th>
+                            <th>關聯法律</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -26,6 +27,7 @@
                             </td>
                             <td>{{ date('H:i', strtotime($meet->meet->{'會議時間'})) }}</td>
                             <td style="word-wrap: break; align: left; max-width: 500px">{!! $meet->meet->{'會議名稱'} !!}</td>
+                            <td>{!! $meet->meet->{'關聯法律'} !!}</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -37,7 +39,7 @@
         <div class="card-header py-1">
             <h1 class="h3 mb-0 text-gray-800" id="#{{ $meet->meet->id }}">{{ $meet->meet->title }}</h1>
             <div>
-                {{ $meet->meet->{'會議名稱'} }}
+                {!! $meet->meet->{'會議名稱'} !!}
             </div>
         </div>
         <div class="card-body">

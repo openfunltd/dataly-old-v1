@@ -154,7 +154,7 @@ class IVodHelper
                 }
             }
             //擷取提案法條名稱中母法名稱
-            $law = self::extractLawName($law_raw) ?? $law;
+            $law = self::extractLawName($law_raw) ?? $law_raw;
 
             //辨認 commit 是全新、修正或增訂
             $isUpdate = mb_strpos($law_raw, '修正');

@@ -58,6 +58,10 @@ class IVodController extends Controller
                 if (count($res->laws) > 0 && $res->laws[0]->name == $law_name) {
                     $law_id = $res->laws[0]->id;
                 }
+                if (is_null($law_id)) {
+                    $law = sprintf('%s(新法)', $law_name);
+                    continue;
+                }
                 $law = sprintf('%s(<a href="https://ly.govapi.tw/law/%s">%s</a>)', $law_name, $law_id, $law_id);
             }
             $meets[$meet_id]->meet->{'會議名稱'} = implode("<br>", $digested_subjects);

@@ -124,6 +124,16 @@ class IVodHelper
                 $subjects[] = trim(mb_substr($content, $last_index + 2));
             }
             $current_index = mb_strpos($content, $first_order_indexes[$order + 1]);
+
+            // current_index 應該要是最上層索引編號的位置
+            // 但有時會遇到「第十六條之『二、』」的「二、」被認為是索引的誤判
+            // 所以特別用下列的 code 偵測誤判並跳過
+            $previous_char = mb_substr($content, $current_index - 1, 1);
+            while ($current_index !== false && ! in_array($previous_char, ["\n", ' '])) {
+                $current_index = mb_strpos($content, $first_order_indexes[$order + 1], $current_index + 2);
+                $previous_char = mb_substr($content, $current_index - 1, 1);
+            }
+
             if (! $current_index) {
                 $subjects[] = trim(mb_substr($content, $last_index + 2));
                 break;

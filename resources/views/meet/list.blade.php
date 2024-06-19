@@ -122,7 +122,10 @@
                                     @break
                                 @endif
                                 <?php $item = $row['gazette_records'][$i]; ?>
-                                {{ $item['gazette_id'] }}:{{ $item['page_start'] }}：{{ $item['speaker_cnt'] }}人
+                                <a href="{{ $meet_url . '#gazette-' . $i }}">
+                                {{ $item['gazette_id'] }}:{{ $item['page_start'] }}：
+                                </a>
+                                {{ $item['speaker_cnt'] }}人
                                 <br>
                             @endfor
                         @if ($row['gazette_cnt'] >= 4)

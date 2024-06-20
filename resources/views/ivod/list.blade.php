@@ -50,17 +50,16 @@
                             <th>委員名稱</th>
                             <th>發言時間</th>
                             <th>影片長度</th>
-                            <th>IVOD連結</th>
-                            <th>AI逐字稿</th>
+                            <th title="AI:AI逐字稿、公：公報逐字稿">功能</th>
+                            <th>連結</th>
+                            <th>原始連結</th>
                         </tr>
                     </thead>
                     <tbody>
                     @foreach ($meet->ivods as $ivod)
                         <tr>
                             <td>
-                                <a href="{{ route('ivod', $ivod->id) }}">
-                                    {{ $ivod->{'委員名稱'} }}
-                                </a>
+                                {{ $ivod->{'委員名稱'} }}
                             </td>
                             <td>
                                 {{ $ivod->{'委員發言時間'} }}
@@ -69,12 +68,18 @@
                                 {{ $ivod->{'影片長度'} }}
                             </td>
                             <td>
-                                <a href="{{ $ivod->url }}" target="_blank">IVOD</a>
+                            @if (in_array('ai-transcript', $ivod->features))
+                            AI
+                            @endif
+                            @if (in_array('gazette', $ivod->features))
+                            公
+                            @endif
                             </td>
                             <td>
-                                @if (in_array('ai-transcript', $ivod->features))
-                                有
-                                @endif
+                                <a href="{{ route('ivod', $ivod->id) }}">影片</a>
+                            </td>
+                            <td>
+                                <a href="{{ $ivod->url }}" target="_blank">IVOD</a>
                             </td>
                         </tr>
                         @endforeach

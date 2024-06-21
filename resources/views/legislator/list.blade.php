@@ -3,6 +3,7 @@
     <link href="{{ asset('css/vendor/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/meets/custom.css') }}" rel="stylesheet">
     <link href="{{ asset('css/meets/datatables.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/party_icon.css') }}" rel="stylesheet">
 @endsection
 @section('content')
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -53,7 +54,10 @@
                 @foreach ($legislators as $legislator)
                     <tr>
                         {{-- 姓名 --}}
-                        <td>{{ $legislator['name'] }}</td>
+                        <td>
+                            {{ $legislator['name'] }}
+                            @include('partials.party_icon', ['party' => $legislator['party']])
+                        </td>
                         {{-- 政黨 --}}
                         <td>{{ $legislator['party'] }}</td>
                         {{-- 所屬黨團 --}}

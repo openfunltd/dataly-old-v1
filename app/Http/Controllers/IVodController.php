@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Utils\LyAPI;
 use App\Utils\IVodHelper;
+use App\Utils\LegislatorHelper;
 
 class IVodController extends Controller
 {
@@ -33,6 +34,8 @@ class IVodController extends Controller
         usort($ivods->ivods, function($a, $b) {
             return strtotime($a->start_time) <=> strtotime($b->start_time);
         });
+        $term = $ivods->ivods[0]->meet->term;
+        $legislator_party_map = LegislatorHelper::requestLegislatorPartyMap($term);
 
         $meets = [];
         foreach ($ivods->ivods as $ivod) {
@@ -67,7 +70,7 @@ class IVodController extends Controller
             $meets[$meet_id]->meet->{'會議名稱'} = implode("<br>", $digested_subjects);
             $meets[$meet_id]->meet->{'會議時間'} = $ivod->{'會議時間'};
             $meets[$meet_id]->meet->{'關聯法律'} = implode("<br>", $related_laws);
-
+            $ivod->{'party'} = self::getParty($ivod->委員名稱, $legislator_party_map);
             $meets[$meet_id]->ivods[] = $ivod;
         }
         return view('ivod.list', [
@@ -129,5 +132,14 @@ class IVodController extends Controller
             'dates' => $dates,
             'ivod_stat' => $ivod_stat,
         ]);
+    }
+
+    private function getParty($name, $legislator_party_map) 
+    {
+        $name = str_replace(" ", "", $name);
+        if (array_key_exists($name, $legislator_party_map)) {
+            return $legislator_party_map[$name];
+        }
+        return "";
     }
 }

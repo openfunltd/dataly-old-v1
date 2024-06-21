@@ -3,6 +3,7 @@
     <link href="{{ asset('css/vendor/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/meets/custom.css') }}" rel="stylesheet">
     <link href="{{ asset('css/meets/datatables.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/party_icon.css') }}" rel="stylesheet">
 @endsection
 @section('content')
 <h1 class="h3 mb-0 text-gray-800">IVOD 列表 :: {{ $date }}</h1>
@@ -60,6 +61,7 @@
                         <tr>
                             <td>
                                 {{ $ivod->{'委員名稱'} }}
+                                @include('partials.party_icon', ['party' => $ivod->party])
                             </td>
                             <td>
                                 {{ $ivod->{'委員發言時間'} }}

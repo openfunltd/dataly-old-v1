@@ -2,6 +2,7 @@
 @section('head-load')
     <link href="{{ asset('css/vendor/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/bills/datatables.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/party_icon.css') }}" rel="stylesheet">
 @endsection
 @section('content')
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -70,7 +71,10 @@
               <td>{{ $row['initial_date'] }}</td>
               <td>{{ $row['bill_id'] }}</td>
               <td>{{ $row['sessionPeriod'] }}</td>
-              <td>{{ $row['proposer'] }}</td>
+              <td>
+                {{ $row['proposer'] }}
+                @include('partials.party_icon', ['party' => $row['proposer_party']])
+              </td>
               <td>{{ $row['bill_name'] }}</td>
               <td>
                 @foreach ($row['law_names'] as $idx => $law_name)

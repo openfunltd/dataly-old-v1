@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use App\Utils\LyAPI;
 
 class BillController extends Controller
 {
@@ -14,6 +15,7 @@ class BillController extends Controller
         $term = (request()->query('term')) ?? $terms[0];
         $sessionPeriods = self::getSessionPeriods($termStat, $term);
         $sessionPeriod = (request()->query('sessionPeriod')) ?? $sessionPeriods[0];
+        $legislator_party_map = self::requestLegislatorPartyMap($term);
         $targetSessionPeriods = [$sessionPeriod];
         if ($sessionPeriod == 'all') {
             $targetSessionPeriods = $sessionPeriods;
@@ -30,6 +32,7 @@ class BillController extends Controller
                 $row['bill_id'] = $bill['提案編號'] ?? 'No Data';
                 $row['sessionPeriod'] = $bill['會期'] ?? '- No Data';
                 $row['proposer'] = self::getProposer($bill);
+                $row['proposer_party'] = self::getParty($row['proposer'], $legislator_party_map);
                 $row['bill_name'] = self::parseBillName($bill);
                 $row['law_names'] = self::getLawNames($bill, $law_name_map);
                 $rows[] = $row;
@@ -219,5 +222,31 @@ class BillController extends Controller
             $law_names[] = $law_name_map[$law_id];
         }
         return $law_names;
+    }
+
+    private function requestLegislatorPartyMap($term)
+    {
+        $res = LyAPI::apiQuery('/legislator/11?limit=300', '查詢立法委員所屬政黨');
+        $legislators = $res->legislators;
+        $legislator_party_map = [];
+        foreach ($legislators as $legislator) {
+            $name = str_replace(" ", "", $legislator->name);
+            $legislator_party_map[$name] = $legislator->party;
+        }
+        return $legislator_party_map;
+    }
+
+    private function getParty($proposer, $legislator_party_map) 
+    {
+        $proposer = str_replace(" ", "", $proposer);
+        $party_end_idx = mb_strrpos($proposer, '立法院黨團');
+        if ($party_end_idx !== false) {
+            $party = mb_substr($proposer, 0, $party_end_idx);
+            return $party;
+        }
+        if (array_key_exists($proposer, $legislator_party_map)) {
+            return $legislator_party_map[$proposer];
+        }
+        return "";
     }
 }

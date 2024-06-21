@@ -239,6 +239,7 @@ class BillController extends Controller
     private function getParty($proposer, $legislator_party_map) 
     {
         $proposer = str_replace(" ", "", $proposer);
+        $proposer = str_replace("‧", "", $proposer);
         $party_end_idx = mb_strrpos($proposer, '立法院黨團');
         if ($party_end_idx !== false) {
             $party = mb_substr($proposer, 0, $party_end_idx);

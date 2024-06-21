@@ -137,6 +137,7 @@ class IVodController extends Controller
     private function getParty($name, $legislator_party_map) 
     {
         $name = str_replace(" ", "", $name);
+        $name = str_replace("‧", "", $name);
         if (array_key_exists($name, $legislator_party_map)) {
             return $legislator_party_map[$name];
         }

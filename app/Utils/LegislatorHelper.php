@@ -20,6 +20,7 @@ class LegislatorHelper
         $legislator_party_map = [];
         foreach ($legislators as $legislator) {
             $name = str_replace(" ", "", $legislator->name);
+            $name = str_replace("‧", "", $name);
             $legislator_party_map[$name] = $legislator->party;
         }
         return $legislator_party_map;

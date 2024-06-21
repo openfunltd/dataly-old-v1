@@ -5,7 +5,8 @@ namespace App\Utils;
 class IVodHelper
 {
     public static function getSubjects($meet_name) {
-        $first_order_indexes = ['一、', '二、', '三、', '四、', '五、', '六、', '七、', '八、', '九、', '十、'];
+        $first_order_indexes = ['一、', '二、', '三、', '四、', '五、', '六、', '七、', '八、', '九、', '十、',
+            '十一、', '十二、', '十三、', '十四、', '十五、', '十六、', '十七、', '十八、', '十九、', '二十、'];
         $content = self::parseReason(trim($meet_name));
         $with_first_order_index = mb_strpos($content, $first_order_indexes[0]) === 0;
 
@@ -119,9 +120,11 @@ class IVodHelper
         $subjects = [];
         $last_index = 0;
         foreach ($first_order_indexes as $order => $idx) {
-            if ($order == 9) {
-                //代表有可能該會會議要處理的事項超過十個
-                $subjects[] = trim(mb_substr($content, $last_index + 2));
+            $current_idx_offset = mb_strlen($first_order_indexes[$order + 1]);
+            $last_idx_offset = mb_strlen($idx);
+            if ($order == 19) {
+                //代表有可能該會會議要處理的事項超過 19 個，目前僅支援 19 個
+                $subjects[] = trim(mb_substr($content, $last_index + $last_idx_offset));
             }
             $current_index = mb_strpos($content, $first_order_indexes[$order + 1]);
 
@@ -130,15 +133,15 @@ class IVodHelper
             // 所以特別用下列的 code 偵測誤判並跳過
             $previous_char = mb_substr($content, $current_index - 1, 1);
             while ($current_index !== false && ! in_array($previous_char, ["\n", ' '])) {
-                $current_index = mb_strpos($content, $first_order_indexes[$order + 1], $current_index + 2);
+                $current_index = mb_strpos($content, $first_order_indexes[$order + 1], $current_index + $current_idx_offset);
                 $previous_char = mb_substr($content, $current_index - 1, 1);
             }
 
             if (! $current_index) {
-                $subjects[] = trim(mb_substr($content, $last_index + 2));
+                $subjects[] = trim(mb_substr($content, $last_index + $last_idx_offset));
                 break;
             }
-            $subjects[] = trim(mb_substr($content, $last_index + 2, $current_index - ($last_index + 2)));
+            $subjects[] = trim(mb_substr($content, $last_index + $last_idx_offset, $current_index - ($last_index + $last_idx_offset)));
             $last_index = $current_index;
         }
         return $subjects;

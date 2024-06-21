@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use App\Utils\LyAPI;
+use App\Utils\LegislatorHelper;
 
 class BillController extends Controller
 {
@@ -15,7 +15,7 @@ class BillController extends Controller
         $term = (request()->query('term')) ?? $terms[0];
         $sessionPeriods = self::getSessionPeriods($termStat, $term);
         $sessionPeriod = (request()->query('sessionPeriod')) ?? $sessionPeriods[0];
-        $legislator_party_map = self::requestLegislatorPartyMap($term);
+        $legislator_party_map = LegislatorHelper::requestLegislatorPartyMap($term);
         $targetSessionPeriods = [$sessionPeriod];
         if ($sessionPeriod == 'all') {
             $targetSessionPeriods = $sessionPeriods;

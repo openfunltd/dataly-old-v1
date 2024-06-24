@@ -13,6 +13,11 @@ class IVodController extends Controller
     public function ivod($ivod_id)
     {
         $ivod = LyAPI::apiQuery("/ivod/{$ivod_id}?with_transcript=1&with_gazette=1", "查詢影音 {$ivod_id}");
+        $no_transcript = is_null($ivod->transcript);
+        $no_gazette = is_null($ivod->gazette);
+        if ($no_transcript && $no_gazette) {
+            abort(404);
+        }
         return view('ivod.detail', [
             'nav' => 'ivods',
             'ivod' => $ivod,

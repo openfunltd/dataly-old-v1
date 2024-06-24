@@ -51,8 +51,7 @@
                             <th>委員名稱</th>
                             <th>發言時間</th>
                             <th>影片長度</th>
-                            <th title="AI:AI逐字稿、公：公報逐字稿">功能</th>
-                            <th>連結</th>
+                            <th>功能</th>
                             <th>原始連結</th>
                         </tr>
                     </thead>
@@ -71,14 +70,16 @@
                             </td>
                             <td>
                             @if (in_array('ai-transcript', $ivod->features))
-                            AI
+                                <a href="{{ route('ivod', $ivod->id) . "#ai-transcript" }}">AI逐字稿</a>
+                            @else
+                                AI逐字稿
                             @endif
+                            |
                             @if (in_array('gazette', $ivod->features))
-                            公
+                                <a href="{{ route('ivod', $ivod->id) . "#gazette" }}">公報逐字稿</a>
+                            @else
+                                公報逐字稿
                             @endif
-                            </td>
-                            <td>
-                                <a href="{{ route('ivod', $ivod->id) }}">影片</a>
                             </td>
                             <td>
                                 <a href="{{ $ivod->url }}" target="_blank">IVOD</a>

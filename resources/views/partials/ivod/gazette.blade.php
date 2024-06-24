@@ -9,7 +9,7 @@
                 <p class="text-lg text-primary">發言片段</p>
             </div>
             <div class="col">
-                <p class="text-right">
+                <p class="text-right font-weight-bold">
                     lineno: {{ $gazette->lineno }}
                 </p>
             </div>
@@ -28,6 +28,7 @@
                 </tbody>
             </table>
         </div>
+        <br>
         {{-- agenda --}}
         <p class="text-lg text-primary">公報詮釋資料</p>
         <div class="table-responsive">

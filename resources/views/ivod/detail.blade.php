@@ -63,6 +63,9 @@
             </div>
         </div>
     </div>
+    @if(isset($ivod->gazette))
+        @include('partials.ivod.gazette', ['gazette' => $ivod->gazette])
+    @endif
 @endsection
 @section('body-load')
     <script src="{{ asset('js/vendor/jquery.dataTables.min.js') }}"></script>

@@ -119,7 +119,12 @@ class IVodHelper
         $subjects = [];
         $last_index = 0;
         foreach ($first_order_indexes as $order => $idx) {
-            $current_idx_offset = mb_strlen($first_order_indexes[$order + 1]);
+            try {
+                $current_idx_offset = mb_strlen($first_order_indexes[$order + 1]);
+            } catch (\Exception $e) {
+                // chinese index 超出 $first_order_indexes 支援
+                return null;
+            }
             $last_idx_offset = mb_strlen($idx);
             if ($order == 19) {
                 //代表有可能該會會議要處理的事項超過 19 個，目前僅支援 19 個

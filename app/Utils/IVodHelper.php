@@ -202,8 +202,9 @@ class IVodHelper
         $law_end_idx1 = mb_strrpos($raw_text, '法');
         $law_end_idx2 = mb_strrpos($raw_text, '條例');
         $exception_end_idx1 = mb_strrpos($raw_text, '作法');
+        $exception_end_idx2 = mb_strrpos($raw_text, '做法');
         $law_name = null;
-        if ($law_end_idx1 && $law_end_idx1 != $exception_end_idx1 + 1) {
+        if ($law_end_idx1 and ($law_end_idx1 != $exception_end_idx1 + 1) and ($law_end_idx1 != $exception_end_idx2 + 1)) {
             $law_name = mb_substr($raw_text, 0, $law_end_idx1 + 1);
         } else if ($law_end_idx2) {
             $law_name = mb_substr($raw_text, 0, $law_end_idx2 + 2);

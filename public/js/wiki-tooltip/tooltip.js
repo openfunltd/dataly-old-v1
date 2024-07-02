@@ -36,13 +36,13 @@ const tooltips = Array.from(document.querySelectorAll(".wiki-tooltip"));
 const tooltipContainer = document.querySelector(".tooltip-container");
 
 tooltips.forEach((tooltip) => {
-  tooltip.addEventListener("mouseenter", (e) => {
+  tooltip.addEventListener("mouseenter", async (e) => {
 
     legislatorID = e.target.getAttribute('legislator-id');
+    await renderTooltipContainer(legislatorID);
     tooltipContainer.classList.add("fade-in");
     tooltipContainer.style.left = `${e.pageX}px`;
     tooltipContainer.style.top = `${e.pageY}px`;
-    renderTooltipContainer(legislatorID);
   });
 
   tooltip.addEventListener("mouseleave", (e) => {

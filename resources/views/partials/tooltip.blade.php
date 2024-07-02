@@ -11,7 +11,7 @@
             <span class="tooltip-experience"></span>
         </div>
         <div class="col-5">
-            <img class="tooltip-img img-thumbnail" src="https://www.ly.gov.tw//Images/Legislators/110062.jpg">
+            <img class="tooltip-img img-thumbnail" src="">
         </div>
     </div>
 </div>

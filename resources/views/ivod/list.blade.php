@@ -60,9 +60,13 @@
                     @foreach ($meet->ivods as $ivod)
                         <tr>
                             <td>
-                                <span class="wiki-tooltip" legislator-id="{{ $ivod->bio_id }}">
-                                    <a class="no-link">{{ $ivod->{'委員名稱'} }}</a>
-                                </span>
+                                @if($ivod->bio_id != '')
+                                    <span class="wiki-tooltip" legislator-id="{{ $ivod->bio_id }}">
+                                        <a class="no-link">{{ $ivod->{'委員名稱'} }}</a>
+                                    </span>
+                                @else
+                                    {{ $ivod->委員名稱 }}
+                                @endif
                                 @include('partials.party_icon', ['party' => $ivod->party])
                             </td>
                             <td>

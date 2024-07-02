@@ -159,7 +159,8 @@ class IVodController extends Controller
         $name = str_replace(" ", "", $name);
         $name = str_replace("‧", "", $name);
         if (property_exists($legislators_basic_info, $name)) {
-            return $legislators_basic_info->{$name}->bio_id;
+            $bio_id = $legislators_basic_info->{$name}->bio_id;
+            return str_pad($bio_id, 4, '0', STR_PAD_LEFT);
         }
         return "";
     }

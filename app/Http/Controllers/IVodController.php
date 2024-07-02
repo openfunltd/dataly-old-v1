@@ -40,6 +40,8 @@ class IVodController extends Controller
             return strtotime($a->start_time) <=> strtotime($b->start_time);
         });
         $term = $ivods->ivods[0]->meet->term;
+        $legislators = LegislatorHelper::requestLegislators($term);
+        $legislators_basic_info = LegislatorHelper::getLegislatorsBasicInfo($legislators);
         $legislator_party_map = LegislatorHelper::requestLegislatorPartyMap($term);
 
         $meets = [];
@@ -77,7 +79,8 @@ class IVodController extends Controller
             $meets[$meet_id]->meet->{'會議名稱'} = isset($subjects) ? implode("<br>", $digested_subjects) : $ivod->{'會議名稱'};
             $meets[$meet_id]->meet->{'會議時間'} = $ivod->{'會議時間'};
             $meets[$meet_id]->meet->{'關聯法律'} = implode("<br>", $related_laws);
-            $ivod->{'party'} = self::getParty($ivod->委員名稱, $legislator_party_map);
+            $ivod->{'party'} = self::getParty($ivod->委員名稱, $legislators_basic_info);
+            $ivod->{'bio_id'} = self::getBioId($ivod->委員名稱, $legislators_basic_info);
             $meets[$meet_id]->ivods[] = $ivod;
         }
         return view('ivod.list', [
@@ -141,12 +144,22 @@ class IVodController extends Controller
         ]);
     }
 
-    private function getParty($name, $legislator_party_map) 
+    private function getParty($name, $legislators_basic_info)
     {
         $name = str_replace(" ", "", $name);
         $name = str_replace("‧", "", $name);
-        if (array_key_exists($name, $legislator_party_map)) {
-            return $legislator_party_map[$name];
+        if (property_exists($legislators_basic_info, $name)) {
+            return $legislators_basic_info->{$name}->party;
+        }
+        return "";
+    }
+
+    private function getBioId($name, $legislators_basic_info) 
+    {
+        $name = str_replace(" ", "", $name);
+        $name = str_replace("‧", "", $name);
+        if (property_exists($legislators_basic_info, $name)) {
+            return $legislators_basic_info->{$name}->bio_id;
         }
         return "";
     }

@@ -4,6 +4,7 @@
     <link href="{{ asset('css/meets/custom.css') }}" rel="stylesheet">
     <link href="{{ asset('css/meets/datatables.css') }}" rel="stylesheet">
     <link href="{{ asset('css/party_icon.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/tooltip.css') }}" rel="stylesheet">
 @endsection
 @section('content')
 <h1 class="h3 mb-0 text-gray-800">IVOD 列表 :: {{ $date }}</h1>
@@ -59,7 +60,9 @@
                     @foreach ($meet->ivods as $ivod)
                         <tr>
                             <td>
-                                {{ $ivod->{'委員名稱'} }}
+                                <span class="wiki-tooltip" legislator-id="{{ $ivod->bio_id }}">
+                                    <a class="no-link">{{ $ivod->{'委員名稱'} }}</a>
+                                </span>
                                 @include('partials.party_icon', ['party' => $ivod->party])
                             </td>
                             <td>
@@ -93,9 +96,11 @@
     </div>
     @endforeach
     <!-- DataTales -->
+    @include('partials.tooltip')
 @endsection
 @section('body-load')
     <script src="{{ asset('js/vendor/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('js/vendor/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('js/meets/datatables.js') }}"></script>
+    <script src="{{ asset('js/wiki-tooltip/tooltip.js')}}"></script>
 @endsection

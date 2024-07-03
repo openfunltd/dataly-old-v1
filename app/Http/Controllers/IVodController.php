@@ -58,27 +58,18 @@ class IVodController extends Controller
                 }
                 $meets[$meet_id]->ivods = [];
             }
-            $subjects = IVodHelper::getSubjects($ivod->{'會議名稱'});
-            if (isset($subjects)) {
-                $digested_subjects = IVodHelper::digestSubjects($subjects);
-            }
-            $related_laws = IVodHelper::getLaws((isset($subjects)) ? $subjects : [$ivod->{'會議名稱'}]);
-            foreach ($related_laws as &$law) {
-                $law_name = $law;
-                $res = LyAPI::apiQuery("/law?q=$law_name", "查詢 law_id {$law_name}");
-                $law_id = null;
-                if (count($res->laws) > 0 && $res->laws[0]->name == $law_name) {
-                    $law_id = $res->laws[0]->id;
+            $meet = $meets[$meet_id]->meet;
+            if (! property_exists($meet, '會議名稱')) {
+                $subjects = IVodHelper::getSubjects($ivod->{'會議名稱'});
+                if (isset($subjects)) {
+                    $digested_subjects = IVodHelper::digestSubjects($subjects);
                 }
-                if (is_null($law_id)) {
-                    $law = sprintf('%s(新法)', $law_name);
-                    continue;
-                }
-                $law = sprintf('%s(<a href="https://ly.govapi.tw/law/%s">%s</a>)', $law_name, $law_id, $law_id);
+                $related_laws = IVodHelper::getLaws((isset($subjects)) ? $subjects : [$ivod->{'會議名稱'}]);
+                $related_laws = self::getRelatedLawsWithId($related_laws);
+                $meets[$meet_id]->meet->{'會議名稱'} = isset($subjects) ? implode("<br>", $digested_subjects) : $ivod->{'會議名稱'};
+                $meets[$meet_id]->meet->{'會議時間'} = $ivod->{'會議時間'};
+                $meets[$meet_id]->meet->{'關聯法律'} = implode("<br>", $related_laws);
             }
-            $meets[$meet_id]->meet->{'會議名稱'} = isset($subjects) ? implode("<br>", $digested_subjects) : $ivod->{'會議名稱'};
-            $meets[$meet_id]->meet->{'會議時間'} = $ivod->{'會議時間'};
-            $meets[$meet_id]->meet->{'關聯法律'} = implode("<br>", $related_laws);
             $ivod->{'party'} = self::getParty($ivod->委員名稱, $legislators_basic_info);
             $ivod->{'bio_id'} = self::getBioId($ivod->委員名稱, $legislators_basic_info);
             $meets[$meet_id]->ivods[] = $ivod;
@@ -163,5 +154,23 @@ class IVodController extends Controller
             return str_pad($bio_id, 4, '0', STR_PAD_LEFT);
         }
         return "";
+    }
+
+    private function getRelatedLawsWithId($related_laws)
+    {
+        foreach ($related_laws as &$law) {
+            $law_name = $law;
+            $res = LyAPI::apiQuery("/law?q=$law_name", "查詢 law_id {$law_name}");
+            $law_id = null;
+            if (count($res->laws) > 0 && $res->laws[0]->name == $law_name) {
+                $law_id = $res->laws[0]->id;
+            }
+            if (is_null($law_id)) {
+                $law = sprintf('%s(新法)', $law_name);
+                continue;
+            }
+            $law = sprintf('%s(<a href="https://ly.govapi.tw/law/%s">%s</a>)', $law_name, $law_id, $law_id);
+        }
+        return $related_laws;
     }
 }

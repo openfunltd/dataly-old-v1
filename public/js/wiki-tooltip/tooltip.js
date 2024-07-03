@@ -1,14 +1,14 @@
 async function renderTooltipContainer(legislatorID) {
   if (legislatorID === "") { return; }
-  data = localStorage.getItem(legislatorID);
+  data = null;
   data = (data == null) ? await requestLegislatorData(legislatorID) : JSON.parse(data);
-  $('.tooltip-name').text(data.name);
+  $('.tooltip-name').text(data.name).attr('href', `/legislator/${data.bioId}`);
   $('.tooltip-area').text(data.areaName);
   $('.tooltip-img').attr('src', data.imgUrl);
-  htmlContent = data.experience.map(function(text) {
+  htmlContent = data.committee.map(function(text) {
     return '<p>' + text + '</p>'
   }).join('');
-  $('.tooltip-experience').html(htmlContent);
+  $('.tooltip-committee').html(htmlContent);
 }
 
 function requestLegislatorData(legislatorID) {
@@ -16,16 +16,20 @@ function requestLegislatorData(legislatorID) {
     const url = `https://ly.govapi.tw/legislator/${legislatorID}`;
     $.get(`https://ly.govapi.tw/legislator/${legislatorID}`, function(data) {
       name = data.name;
-      areaName = data.legislators[0].areaName;
-      experience = data.legislators[0].experience.slice(0, 3);
-      imgUrl = data.legislators[0].picUrl;
+      legislator = data.legislators.reduce(function(prev, curr) {
+        return prev.term >= curr.term ? prev : curr
+      });
+      areaName = legislator.areaName;
+      committee = legislator.committee;
+      imgUrl = legislator.picUrl;
+      bioId = legislator.bioId;
       data = {
         'name': name,
         'areaName': areaName,
-        'experience': experience,
+        'committee': committee,
         'imgUrl': imgUrl,
+        'bioId': bioId,
       }
-      localStorage.setItem(legislatorID, JSON.stringify(data));
       resolve(data);
     });
   });

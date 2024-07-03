@@ -55,7 +55,7 @@
                     <tr>
                         {{-- 姓名 --}}
                         <td>
-                            {{ $legislator['name'] }}
+                            <a href="{{ route('legislator', ['bio_id' => $legislator['bioId']]) }}">{{ $legislator['name'] }}</a>
                             @include('partials.party_icon', ['party' => $legislator['party']])
                         </td>
                         {{-- 政黨 --}}

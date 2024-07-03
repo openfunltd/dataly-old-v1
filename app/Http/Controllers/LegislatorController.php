@@ -41,6 +41,27 @@ class LegislatorController extends Controller
         ]);
     }
 
+    public function legislator($bio_id)
+    {
+        if (strlen($bio_id) < 4) {
+            $bio_id = str_pad($bio_id, 4, '0', STR_PAD_LEFT);
+        }
+        $res = LyAPI::apiQuery("/legislator/$bio_id", "查詢單一立委資料 bioId: $bio_id");
+        usort($res->legislators, function($a, $b){
+            $a_term = intval($a->term);
+            $b_term = intval($b->term);
+            if ($a_term == $b_term) {
+                return 0;
+            }
+            return $a_term > $b_term ? -1 : 1;
+        });
+
+        return view('legislator.single', [
+            'nav' => 'legislators',
+            'legislators' => $res->legislators,
+        ]);
+    }
+
     private function requestTermStat()
     {
         $url = 'https://ly.govapi.tw/stat';

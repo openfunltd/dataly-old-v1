@@ -11,6 +11,7 @@ Route::get('/meets', [MeetController::class, 'meets'])->name('meets');
 Route::get('/meet/{meet_id}', [MeetController::class, 'meet'])->name('meet');
 Route::get('/bills', [BillController::class, 'bills'])->name('bills');
 Route::get('/legislators', [LegislatorController::class, 'legislators'])->name('legislators');
+Route::get('/legislator/{bio_id}', [LegislatorController::class, 'legislator'])->name('legislator');
 
 use App\Http\Controllers\IVodController;
 Route::get('/ivod/datelist', [IVodController::class, 'datelist'])->name('ivods.datelist');

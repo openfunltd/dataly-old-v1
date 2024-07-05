@@ -54,19 +54,14 @@ class BillController extends Controller
 
     private function requestTermStat()
     {
-        $url = 'https://ly.govapi.tw/stat';
-        $res = Http::get($url);
-        $termStat = [];
-        if ($res->successful()) {
-            $termStat = $res->json()['bill']['terms'];
-        }
-        return $termStat;
+        $res = LyAPI::apiQuery('/stat', '查詢提案統計數據');
+        return $res->bill->terms;
     }
 
     private function getTermOptions($termStat)
     {
         $terms = array_map(function($termData) {
-            return $termData['term'];
+            return $termData->term;
         }, $termStat);
         return $terms;
     }
@@ -74,12 +69,12 @@ class BillController extends Controller
     private function getSessionPeriods($termStat, $term)
     {
         $termData = array_filter($termStat, function($termData) use ($term) {
-            return $termData['term'] == $term;
+            return $termData->term == $term;
         });
         $termData = reset($termData);
         $sessionPeriods =  array_map(function($sessionPeriodData) {
-            return $sessionPeriodData['sessionPeriod'];
-        },$termData['sessionPeriod_count']);
+            return $sessionPeriodData->sessionPeriod;
+        },$termData->sessionPeriod_count);
         return $sessionPeriods;
     }
 

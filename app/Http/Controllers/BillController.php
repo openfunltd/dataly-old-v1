@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Utils\LegislatorHelper;
+use App\Utils\LyAPI;
 
 class BillController extends Controller
 {
@@ -222,18 +223,6 @@ class BillController extends Controller
             $law_names[] = $law_name_map[$law_id];
         }
         return $law_names;
-    }
-
-    private function requestLegislatorPartyMap($term)
-    {
-        $res = LyAPI::apiQuery('/legislator/11?limit=300', '查詢立法委員所屬政黨');
-        $legislators = $res->legislators;
-        $legislator_party_map = [];
-        foreach ($legislators as $legislator) {
-            $name = str_replace(" ", "", $legislator->name);
-            $legislator_party_map[$name] = $legislator->party;
-        }
-        return $legislator_party_map;
     }
 
     private function getParty($proposer, $legislator_party_map) 

@@ -15,15 +15,16 @@ class LegislatorHelper
 
     public static function requestLegislators($term)
     {
-        $res = LyAPI::apiQuery('/legislator/11?limit=300', '查詢立法委員所屬政黨');
+        $res = LyAPI::apiQuery("/legislator/$term?limit=300", "查詢第 $term 屆立法委員基本資料");
         return $res->legislators;
     }
 
-    //TODO retire the function
-    public static function requestLegislatorPartyMap($term)
+    public static function requestLegislatorPartyMap($term = null, $legislators = null)
     {
-        $res = LyAPI::apiQuery("/legislator/$term?limit=300", '查詢立法委員所屬政黨');
-        return $res->legislators;
+        if (is_null($legislators)) {
+            $res = LyAPI::apiQuery("/legislator/$term?limit=300", '查詢立法委員所屬政黨');
+            $legislators = $res->legislators;
+        }
         $legislator_party_map = [];
         foreach ($legislators as $legislator) {
             $name = str_replace(" ", "", $legislator->name);

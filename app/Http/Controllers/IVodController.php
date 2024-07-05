@@ -42,7 +42,7 @@ class IVodController extends Controller
         $term = $ivods->ivods[0]->meet->term;
         $legislators = LegislatorHelper::requestLegislators($term);
         $legislators_basic_info = LegislatorHelper::getLegislatorsBasicInfo($legislators);
-        $legislator_party_map = LegislatorHelper::requestLegislatorPartyMap($term);
+        $legislator_party_map = LegislatorHelper::requestLegislatorPartyMap(legislators: $legislators);
 
         $meets = [];
         foreach ($ivods->ivods as $ivod) {

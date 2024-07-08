@@ -52,7 +52,7 @@ class IVodController extends Controller
                 if (strpos($meet_id, 'unknown') === 0) {
                     $meets[$meet_id]->meet = new \StdClass;
                     $meets[$meet_id]->meet->id = $meet_id;
-                    $meets[$meet_id]->meet->title= preg_replace('#（事由.*#', '', $ivod->{'會議名稱'});
+                    $meets[$meet_id]->meet->title = preg_replace('#（事由.*#', '', $ivod->{'會議名稱'});
                 } else {
                     $meets[$meet_id]->meet = $ivod->meet;
                 }
@@ -69,6 +69,10 @@ class IVodController extends Controller
                 $meets[$meet_id]->meet->{'會議名稱'} = isset($subjects) ? implode("<br>", $digested_subjects) : $ivod->{'會議名稱'};
                 $meets[$meet_id]->meet->{'會議時間'} = $ivod->{'會議時間'};
                 $meets[$meet_id]->meet->{'關聯法律'} = implode("<br>", $related_laws);
+            }
+            if (! property_exists($meet, 'title')) {
+                $end_idx = mb_strpos($ivod->會議名稱, '（事由：');
+                $meets[$meet_id]->meet->title = mb_substr($ivod->會議名稱, 0, $end_idx);
             }
             $ivod->{'party'} = self::getParty($ivod->委員名稱, $legislators_basic_info);
             $ivod->{'bio_id'} = self::getBioId($ivod->委員名稱, $legislators_basic_info);

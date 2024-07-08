@@ -28,10 +28,10 @@ class BillController extends Controller
             foreach ($bills as $bill) {
                 $row = [];
                 $row['links'] = self::buildLinks($bill);
-                $row['law_diff'] = array_key_exists('對照表', $bill);
+                $row['law_diff'] = property_exists($bill, '對照表');
                 $row['initial_date'] = self::getInitialDate($bill);
-                $row['bill_id'] = $bill['提案編號'] ?? 'No Data';
-                $row['sessionPeriod'] = $bill['會期'] ?? '- No Data';
+                $row['bill_id'] = $bill->提案編號 ?? 'No Data';
+                $row['sessionPeriod'] = $bill->會期 ?? '- No Data';
                 $row['proposer'] = self::getProposer($bill);
                 $row['proposer_party'] = self::getParty($row['proposer'], $legislator_party_map);
                 $row['bill_name'] = self::parseBillName($bill);
@@ -78,28 +78,14 @@ class BillController extends Controller
         return $sessionPeriods;
     }
 
-    private function requestBills($term, $session_period) 
+    private function requestBills($term, $session_period, $usingPager = false)
     {
-        $bills = [];
-        $bills_url = self::buildBillsUrl($term, $session_period, '委員提案');
-        $res = Http::get($bills_url);
-        if ($res->successful()) {
-            $bills = $res->json()['bills'];
-        }
-        $bills_url = self::buildBillsUrl($term, $session_period, '政府提案');
-        $res = Http::get($bills_url);
-        if ($res->successful()) {
-            $bills = array_merge($bills, $res->json()['bills']);
-        }
-        return $bills;
-    }
-
-    private function buildBillsUrl($term, $session_period, $proposal_type)
-    {
-        $bills_url = "https://ly.govapi.tw/bill/?term=$term&sessionPeriod=$session_period" .
-          "&bill_type=法律案&bill_type=修憲案&proposal_type=$proposal_type" .
-          "&limit=2000&field=提案人&field=對照表&field=laws&field=議案流程";
-        return $bills_url;
+        $url = "/bill/?term=$term&sessionPeriod=$session_period" .
+            "&bill_type=法律案&bill_type=修憲案&proposal_type=委員提案&proposal_type=政府提案" .
+            "&limit=2000&field=提案人&field=對照表&field=laws&field=議案流程";
+        $reason = sprintf("查詢第 %s 屆第 %s 會期提案", $term, $session_period);
+        $res = LyAPI::apiQuery($url, $reason);
+        return $res->bills;
     }
 
     private function requestLawNameMap($bills)
@@ -107,10 +93,10 @@ class BillController extends Controller
         $law_ids = [];
         $url_base = 'https://ly.govapi.tw/law?';
         foreach ($bills as $bill) {
-            if (! array_key_exists('laws', $bill)) {
+            if (! property_exists($bill ,'laws')) {
                 continue;
             }
-            foreach ($bill['laws'] as $law_id) {
+            foreach ($bill->laws as $law_id) {
                 if (! in_array($law_id, $law_ids)) {
                     $law_ids[] = $law_id;
                 }
@@ -148,9 +134,9 @@ class BillController extends Controller
 
     private function buildLinks($bill)
     {
-        $billNo = $bill['billNo'];
-        $law_diff = $bill['對照表'] ?? null;
-        $bill_SN = $bill['提案編號'] ?? $billNo;
+        $billNo = $bill->billNo;
+        $law_diff = $bill->對照表 ?? null;
+        $bill_SN = $bill->提案編號 ?? $billNo;
         $links = [];
         $links[] = ['公報網', "https://ppg.ly.gov.tw/ppg/bills/$billNo/details"];
         $links[] = [
@@ -168,10 +154,10 @@ class BillController extends Controller
     private function getInitialDate($bill)
     {
         $initialDate = '- No Data';
-        if (is_null($bill['議案流程']) || count($bill['議案流程']) === 0) {
+        if (is_null($bill->議案流程) || count($bill->議案流程) === 0) {
             return $initialDate;
         }
-        $dateArray = $bill['議案流程'][0]['日期'];
+        $dateArray = $bill->議案流程[0]->日期;
         if (is_null($dateArray) || count($dateArray) === 0) {
             return $initialDate;
         }
@@ -180,8 +166,8 @@ class BillController extends Controller
 
     private function getProposer($bill)
     {
-        $proposers = $bill['提案人'] ?? null;
-        $proposal_from = $bill['提案單位/提案委員'] ?? null;
+        $proposers = $bill->提案人 ?? null;
+        $proposal_from = $bill->{'提案單位/提案委員'} ?? null;
         if (isset($proposers) && count($proposers) > 0) {
             return $proposers[0];
         }
@@ -193,7 +179,7 @@ class BillController extends Controller
 
     private function parseBillName($bill)
     {
-        $bill_name = $bill['議案名稱'];
+        $bill_name = $bill->議案名稱;
         if (mb_substr($bill_name, 0, 2) === "廢止") {
             $bill_name = explode('，', $bill_name)[0];
             $bill_name = str_replace(['「','」'], '', $bill_name);
@@ -209,7 +195,7 @@ class BillController extends Controller
 
     private function getLawNames($bill, $law_name_map)
     {
-        $laws = $bill['laws'] ?? null;
+        $laws = $bill->laws ?? null;
         if (is_null($laws)) {
             return [];
         }

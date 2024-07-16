@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Utils\LyAPI;
+use App\Utils\Helper;
 use App\Utils\IVodHelper;
 use App\Utils\LegislatorHelper;
 
@@ -39,7 +40,7 @@ class IVodController extends Controller
         usort($ivods->ivods, function($a, $b) {
             return strtotime($a->start_time) <=> strtotime($b->start_time);
         });
-        $term = $ivods->ivods[0]->meet->term;
+        $term = Helper::getTerm($date);
         $legislators = LegislatorHelper::requestLegislators($term);
         $legislators_basic_info = LegislatorHelper::getLegislatorsBasicInfo($legislators);
         $legislator_party_map = LegislatorHelper::requestLegislatorPartyMap(legislators: $legislators);

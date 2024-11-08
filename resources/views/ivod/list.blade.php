@@ -77,7 +77,7 @@
                             </td>
                             <td>
                             @if (in_array('ai-transcript', $ivod->features))
-                                <a href="{{ route('ivod', $ivod->id) . "#ai-transcript" }}">AI逐字稿</a>
+                                <a href="{{ sprintf("https://dataly.openfun.app/collection/item/ivod/%s/ai-transcript", $ivod->id) }}">AI逐字稿</a>
                             @else
                                 AI逐字稿
                             @endif

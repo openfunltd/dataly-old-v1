@@ -91,7 +91,7 @@ class BillController extends Controller
     private function requestLawNameMap($bills)
     {
         $law_ids = [];
-        $url_base = 'https://ly.govapi.tw/law?';
+        $url_base = 'https://ly.govapi.tw/v1/law?';
         foreach ($bills as $bill) {
             if (! property_exists($bill ,'laws')) {
                 continue;
@@ -147,7 +147,7 @@ class BillController extends Controller
             '舊版對照表',
             ($law_diff) ? "https://openfunltd.github.io/law-diff/bills.html?billNo=$billNo" : "",
         ];
-        $links[] = ['國會API', "https://ly.govapi.tw/bill/$billNo"];
+        $links[] = ['國會API', "https://ly.govapi.tw/v1/bill/$billNo"];
         return $links;
     }
 

@@ -13,8 +13,8 @@ async function renderTooltipContainer(legislatorID) {
 
 function requestLegislatorData(legislatorID) {
   return new Promise((resolve, reject) => {
-    const url = `https://ly.govapi.tw/legislator/${legislatorID}`;
-    $.get(`https://ly.govapi.tw/legislator/${legislatorID}`, function(data) {
+    const url = `https://ly.govapi.tw/v1/legislator/${legislatorID}`;
+    $.get(`https://ly.govapi.tw/v1/legislator/${legislatorID}`, function(data) {
       name = data.name;
       legislator = data.legislators.reduce(function(prev, curr) {
         return prev.term >= curr.term ? prev : curr

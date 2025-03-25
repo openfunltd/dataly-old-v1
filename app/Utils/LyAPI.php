@@ -13,7 +13,7 @@ class LyAPI
         if (env('LYAPI_HOST')) {
             $url = 'https://' . env('LYAPI_HOST') . $url;
         } else {
-            $url = 'https://ly.govapi.tw' . $url;
+            $url = 'https://ly.govapi.tw/v1' . $url;
         }
 
         $res = Http::get($url);

@@ -174,7 +174,7 @@ class IVodController extends Controller
                 $law = sprintf('%s(新法)', $law_name);
                 continue;
             }
-            $law = sprintf('%s(<a href="https://ly.govapi.tw/law/%s">%s</a>)', $law_name, $law_id, $law_id);
+            $law = sprintf('%s(<a href="https://ly.govapi.tw/v1/law/%s">%s</a>)', $law_name, $law_id, $law_id);
         }
         return $related_laws;
     }

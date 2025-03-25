@@ -100,7 +100,7 @@ class MeetController extends Controller
 
     private function requestTermStat()
     {
-        $url = 'https://ly.govapi.tw/stat';
+        $url = 'https://ly.govapi.tw/v1/stat';
         $res = Http::get($url);
         $termStat = [];
         if ($res->successful()) {
@@ -135,7 +135,7 @@ class MeetController extends Controller
         if ($session_period == 'all') {
             $session_period = '';
         }
-        $url_base = "https://ly.govapi.tw/meet/$term/$session_period";
+        $url_base = "https://ly.govapi.tw/v1/meet/$term/$session_period";
         $res = Http::get($url_base);
         if (! $res->successful()) {
             return [];
@@ -157,7 +157,7 @@ class MeetController extends Controller
 
     private function requestAllGzaettes()
     {
-        $url = 'https://ly.govapi.tw/gazette';
+        $url = 'https://ly.govapi.tw/v1/gazette';
         $res = Http::get($url);
         if (! $res->successful()) {
             return [];
@@ -206,7 +206,7 @@ class MeetController extends Controller
 
     private function requestIvods($meet_id)
     {
-       $url = "https://ly.govapi.tw/meet/$meet_id/ivod"; 
+       $url = "https://ly.govapi.tw/v1/meet/$meet_id/ivod"; 
        $ivods = LyAPI::paginationRequest($url, 'ivods');
        return $ivods;
     }
@@ -216,7 +216,7 @@ class MeetController extends Controller
         $meet_ids = array_map(function ($meet) {
             return $meet['meet_id'];
         }, $meets);
-        $base_url = "https://ly.govapi.tw/ivod/?%s&aggs=meet_id,date&size=0";
+        $base_url = "https://ly.govapi.tw/v1/ivod/?%s&aggs=meet_id,date&size=0";
         $data = LyAPI::batchRequest($base_url, $meet_ids, 'meet_id=');
         $ivod_cnt = [];
         foreach ($data as $agg) {
@@ -232,7 +232,7 @@ class MeetController extends Controller
     private function requestWrittenI12n($meet)
     {
         $meet_id = $meet['meet_id'];
-        $url = "http://ly.govapi.tw/meet/$meet_id/interpellation";
+        $url = "http://ly.govapi.tw/v1/meet/$meet_id/interpellation";
         $res = Http::get($url);
         if (! $res->successful()) {
             return [];
@@ -252,7 +252,7 @@ class MeetController extends Controller
 
     private function requestMeet($meet_id)
     {
-        $url = "http://ly.govapi.tw/meet/$meet_id";
+        $url = "http://ly.govapi.tw/v1/meet/$meet_id";
         $res = Http::get($url);
         if (! $res->successful()) {
             return null;

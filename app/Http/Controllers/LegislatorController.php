@@ -64,7 +64,7 @@ class LegislatorController extends Controller
 
     private function requestTermStat()
     {
-        $url = 'https://ly.govapi.tw/stat';
+        $url = 'https://ly.govapi.tw/v1/stat';
         $res = Http::get($url);
         $termStat = [];
         if ($res->successful()) {
@@ -95,7 +95,7 @@ class LegislatorController extends Controller
 
     private function requestLegislators($term)
     {
-        $url = "https://ly.govapi.tw/legislator/$term";
+        $url = "https://ly.govapi.tw/v1/legislator/$term";
         $data = LyAPI::paginationRequest($url, 'legislators');
         return $data;
     }
